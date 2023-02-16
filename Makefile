@@ -1,8 +1,8 @@
 ifndef FORMAT_FILES
-	export FORMAT_FILES:=kci tests
+	export FORMAT_FILES:=confluence tests
 endif
 ifndef LINT_FILES
-	export LINT_FILES:=kci
+	export LINT_FILES:=confluence
 endif
 
 .PHONY: format lint test docs publish

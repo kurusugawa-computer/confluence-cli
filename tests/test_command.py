@@ -1,4 +1,4 @@
-from kci.command.address import power
+from confluence.command.address import power
 
 
 def test_power():

@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "来栖川用語を出力するCLIです"
 authors = ["来栖川 芹香"]
 packages = [
-    { include = "kci" }
+    { include = "confluence" }
 ]
 readme="README.md"
 repository="https://github.com/kurusugawa-computer/kci-python-devcontainer"
@@ -22,8 +22,8 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-click = "*"
 requests = "*"
+pyquery = "^2"
 
 [tool.poetry.dev-dependencies]
 # test library
@@ -51,7 +51,7 @@ pydata-sphinx-theme = "*"
 types-requests = "*"
 
 [tool.poetry.scripts]
-kurusugawa-cli = "kci.__main__:cli"
+kurusugawa-cli = "confluence.__main__:cli"
 
 [tool.black]
 line-length = 120

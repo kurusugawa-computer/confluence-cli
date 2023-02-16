@@ -2,8 +2,8 @@ import logging
 
 import click
 
-import kci
-from kci.command.address import address
+import confluence
+from confluence.command.address import address
 
 
 def set_logger():
@@ -13,7 +13,7 @@ def set_logger():
 
 
 @click.group()
-@click.version_option(version=kci.__version__)
+@click.version_option(version=confluence.__version__)
 def cli():
     set_logger()
 
