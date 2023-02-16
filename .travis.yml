@@ -1,0 +1,22 @@
+version: ~> 1.0
+dist: focal
+language: python
+python:
+  - "3.9"
+  - "3.10"
+install:
+  # pipをアップグレードする理由: pipのバージョンが古いと、pillowなど環境ごとにwheelを提供しているライブラリのインストールに失敗する可能性があるため
+  - pip install pip --upgrade
+  - pip install 'poetry>=1.1.15,<1.2'
+  # travis_retryを使う理由: インストール時にtimeoutで失敗しないようにするため
+  - travis_retry poetry install
+
+script:
+   - make lint
+   - make test
+branches:
+  only:
+  - main
+env:
+  # `poetry install`時に`Max retries exceeded with`が発生しないようにするため、タイムアウト時間を指定する
+  - PIP_DEFAULT_TIMEOUT=300
