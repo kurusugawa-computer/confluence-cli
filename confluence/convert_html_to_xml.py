@@ -3,11 +3,13 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 import pyquery
+from lxml.html import HtmlElement, fromstring
+from lxml import etree
 
 logger = logging.getLogger(__name__)
 
 
-def convert_img_elm(img_elm):
+def convert_img_elm(img_elm: HtmlElement):
     """
     `<img src="foo.png">`を以下のXMLに変換する
 
@@ -21,17 +23,28 @@ def convert_img_elm(img_elm):
     ```
     <ac:image><ri:url ri:value="http://confluence.atlassian.com/images/logo/confluence_48_trans.png" /></ac:image>
     ```
+
+    Args:
+        trim_dirname_for_src_value: src属性値からディレクトリ名を削除する。Confluenceにアップロードしたファイル名にスラッシュは含められないため。
     """
     img_elm.tag = "ac:image"
     src_value: str = img_elm.attrib.get("src")
     if src_value.startswith("http:") or src_value.startswith("https:"):
-        url_elm = pyquery.PyQuery("ri:url")
-        url_elm.attr("ri:value", src_value)
-        img_elm.append(url_elm[0])
+        url_elm = fromstring("<ri:url/>")
+        # コロン付きのタグが生成できないので、tagを改めて置換する
+        url_elm.tag = "ri:url"
+        url_elm.attrib["ri:value"] = src_value
+        img_elm.append(url_elm)
     else:
-        attachment_elm = pyquery.PyQuery("ri:attachment")
-        attachment_elm.attr("ri:filename", src_value)
-        img_elm.append(attachment_elm[0])
+        attachment_elm = fromstring("<ri:attachment/>")
+        # コロン付きのタグが生成できないので、改めて置換した
+        attachment_elm.tag = "ri:attachment"
+        # src属性値にスラッシュが含まれていたら、ディレクトリ名を取り除いてファイル名だけを設定する
+        # Confluenceにアップロードしたファイルは、ファイル名スラッシュは含められないため、
+        tmp = src_value.split("/")
+        attachment_elm.attrib["ri:filename"] = tmp[-1]
+
+        img_elm.append(attachment_elm)
 
     img_elm.attrib["ac:thumbnail"] = "true"
 
