@@ -51,10 +51,6 @@
     ],
     "python.analysis.completeFunctionParens": true,
     "[python]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        },
     },
     "python.testing.autoTestDiscoverOnSaveEnabled": false,
 }

@@ -27,6 +27,7 @@
         "noqa",
         "popen",
         "pylint",
+        "pyquery",
         "tzlocal",
         "unsubscriptable"
     ]
