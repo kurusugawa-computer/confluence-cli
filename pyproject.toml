@@ -24,6 +24,7 @@ classifiers = [
 python = "^3.9"
 requests = "*"
 pyquery = "^2"
+requests-toolbelt = "^0.10.1"
 
 [tool.poetry.dev-dependencies]
 # test library
@@ -49,6 +50,9 @@ pydata-sphinx-theme = "*"
 
 # type stub package
 types-requests = "*"
+
+# 開発用
+ipython = "*"
 
 [tool.poetry.scripts]
 kurusugawa-cli = "confluence.__main__:cli"
