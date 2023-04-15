@@ -26,33 +26,39 @@ requests = "*"
 pyquery = "^2"
 requests-toolbelt = "^0.10.1"
 
-[tool.poetry.dev-dependencies]
-# test library
-pytest = "*"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7"
 pytest-xdist = "*"
 pytest-cov = "*"
 
-# format library
-black = "*" # メインのformatter
-isort = "*" # import文をsortするために利用する
-autoflake = "*" # 未使用のimport文を削除するために利用する
+[tool.poetry.group.formatter.dependencies]
+black = "*"
 
-# lint library
-flake8 = "*"
-mypy = "*"
-pylint = "*"
+[tool.poetry.group.linter.dependencies]
+ruff = ">=0.0.256"
+mypy = "^1"
+pylint = "^2"
 
-# document library
-sphinx = "*"
-docutils = "*"
-# pandasのdocumentationページに近いレイアウトにするためのパッケージ
-pydata-sphinx-theme = "*"
-
-# type stub package
+types-pytz = "*"
 types-requests = "*"
+types-python-dateutil = "*"
+types-PyYAML = "*"
 
-# 開発用
+[tool.poetry.group.documentation.dependencies]
+sphinx = "^6.1"
+pydata-sphinx-theme = ">=0.13"
+sphinx-last-updated-by-git = "*"
+sphinx-argparse = "*"
+
+
+[tool.poetry.group.dev]
+# 開発するときのみ必要なライブラリ。インストールしなくても開発はできるので、オプショナルにする
+optional = true
+
+[tool.poetry.group.dev.dependencies]
 ipython = "*"
+
 
 [tool.poetry.scripts]
 kurusugawa-cli = "confluence.__main__:cli"

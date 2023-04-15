@@ -6,8 +6,58 @@ from requests_toolbelt import sessions
 QueryParams = dict[str, Any]
 
 
+def my_backoff(function):
+    """
+    リトライが必要な場合はリトライする
+    """
+
+    @functools.wraps(function)
+    def wrapped(*args, **kwargs):
+        def should_retry(e) -> bool:
+            """
+            リトライするかどうか
+            status codeが5xxのときまたはToo many Requests(429)のときはリトライする。
+            ただし500はリトライしない
+            https://requests.kennethreitz.org/en/master/user/quickstart/#errors-and-exceptions
+
+            Args:
+                e: exception
+
+            Returns:
+                True: give up(リトライしない), False: リトライする
+
+            """
+            if isinstance(e, requests.exceptions.HTTPError):
+                if e.response is None:
+                    return True
+
+                # status_codeの範囲は4XX ~ 5XX
+                status_code = e.response.status_code
+
+                if status_code == requests.codes.too_many_requests:
+                    return False
+                elif 400 <= status_code < 500:
+                    return True
+                elif 500 <= status_code < 600:
+                    return False
+
+            return False
+
+        return backoff.on_exception(
+            backoff.expo,
+            (requests.exceptions.RequestException, ConnectionError),
+            jitter=backoff.full_jitter,
+            max_time=300,
+            giveup=should_retry,
+            logger=logger,
+        )(function)(*args, **kwargs)
+
+    return wrapped
+
+
 class Api:
     """
+    https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/
 
     Args:
         base_url: example: `https://kurusugawa.jp/confluence`
@@ -25,22 +75,52 @@ class Api:
         def __init__(self, session: requests.Session) -> None:
             self.session = session
 
-        def get_content(self, query_params: Optional[QueryParams] = None):
+        @my_backoff
+        def get_content(self, query_params: Optional[QueryParams] = None) -> list[dict[str, Any]]:
+            """
+            Returns a paginated list of Content.
+
+            https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getContent
+            """
             return self.session.get(f"content", params=query_params)
 
-        def get_content_by_id(self, id: str, query_params: Optional[QueryParams] = None):
+        @my_backoff
+        def get_content_by_id(self, id: str, query_params: Optional[QueryParams] = None)  -> dict[str, Any]:
+            """
+            Returns a piece of Content.
+
+            https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getContentById
+            """
             response = self.session.get(f"content/{id}", params=query_params)
             return response
 
-        def delete(self, id: str, query_params: Optional[QueryParams] = None):
+        @my_backoff
+        def delete(self, id: str, query_params: Optional[QueryParams] = None) -> None:
+            """
+            Trashes or purges a piece of Content, based on its {@link ContentType} and {@link ContentStatus}.
+
+            https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-delete
+            """
+
             response = self.session.delete(f"content/{id}", params=query_params)
             return response
 
+        @my_backoff
         def get_history(self, id: str, query_params: Optional[QueryParams] = None):
+            """Returns the history of a particular piece of content
+
+            https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-delete
+            """
             response = self.session.get(f"content/{id}/history", params=query_params)
             return response.json()
 
-        def search(self, query_params: Optional[QueryParams] = None):
+        @my_backoff
+        def search(self, query_params: Optional[QueryParams] = None) -> list[dict[str, Any]]:
+            """
+            Fetch a list of content using the Confluence Query Language (CQL)
+
+            https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-search
+            """
             response = self.session.get(f"content/search", params=query_params)
             return response.json()
 
