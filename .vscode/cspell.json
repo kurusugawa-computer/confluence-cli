@@ -16,6 +16,7 @@
         "astimezone",
         "astype",
         "asyncio",
+        "backoff",
         "dateutil",
         "dtypes",
         "getrgb",

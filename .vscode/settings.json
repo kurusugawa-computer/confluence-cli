@@ -17,7 +17,7 @@
     "python.languageServer": "Pylance",
     "python.autoComplete.addBrackets": true,
     "python.autoComplete.extraPaths": [
-        ".venv/lib/python3.8/site-packages/"
+        ".venv/lib/python3.10/site-packages/"
     ],
     // "poetry run"コマンドで実行することを想定しているので、venv環境を自動的にactivateしないようにする
     "python.terminal.activateEnvironment": false,
@@ -27,11 +27,6 @@
     "python.linting.lintOnSave": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintPath": ".venv/bin/pylint",
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Path": ".venv/bin/flake8",
-    "python.linting.flake8CategorySeverity.E": "Warning",
-    "python.linting.flake8CategorySeverity.F": "Warning",
-    "python.linting.flake8Args": [],
     "python.linting.mypyEnabled": true,
     "python.linting.mypyPath": ".venv/bin/mypy",
     "python.linting.mypyArgs": [],
@@ -47,7 +42,7 @@
         "docs/**/*.py"
     ],
     "python.analysis.extraPaths": [
-        ".venv/lib/python3.8/site-packages/"
+        ".venv/lib/python3.10/site-packages/"
     ],
     "python.analysis.completeFunctionParens": true,
     "[python]": {

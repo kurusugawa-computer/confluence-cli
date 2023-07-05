@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pyquery
 from lxml.html import HtmlElement, fromstring
-from lxml import etree
+
 
 logger = logging.getLogger(__name__)
 
@@ -67,21 +67,6 @@ def convert(input_html_file: Path, output_html_file: Path) -> None:
     # 画像をすべてアップロードして、img要素のsrc属性値を annofab urlに変更する
     for img_elm in pq_img:
         convert_img_elm(img_elm)
-
-        # src_value: str = img_elm.attrib.get("src")
-        # if src_value is None:
-        #     continue
-
-        # if src_value.startswith("http:") or src_value.startswith("https:"):
-        #     continue
-
-        # if src_value.startswith("data:"):
-        #     img_path = save_image_from_data_uri_scheme(src_value, temp_dir=temp_dir)
-        # else:
-        #     if src_value[0] == "/":
-        #         img_path = Path(src_value)
-        #     else:
-        #         img_path = html_path.parent / src_value
 
     # body要素があればその中身、なければhtmlファイルの中身をアップロードする
     if len(pq_html("body")) > 0:
