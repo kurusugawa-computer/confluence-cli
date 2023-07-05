@@ -2,6 +2,12 @@ from typing import Any, Optional
 
 import requests
 from requests_toolbelt import sessions
+import functools
+import backoff
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 QueryParams = dict[str, Any]
 
@@ -115,7 +121,7 @@ class Api:
             return response.json()
 
         @my_backoff
-        def search(self, query_params: Optional[QueryParams] = None) -> list[dict[str, Any]]:
+        def search(self, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
             """
             Fetch a list of content using the Confluence Query Language (CQL)
 

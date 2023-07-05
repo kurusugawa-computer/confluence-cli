@@ -23,6 +23,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "*"
+backoff = "*"
 pyquery = "^2"
 requests-toolbelt = "^0.10.1"
 
