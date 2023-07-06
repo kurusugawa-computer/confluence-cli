@@ -19,7 +19,9 @@
 	"forwardPorts": [],
 	"runArgs": [
 		"--init",
-		"--net=host"
+		"--net=host",
+		"--env=CONFLUENCE_USER_NAME",
+		"--env=CONFLUENCE_PASSWORD"
 	],
 	"postStartCommand": "poetry install",
 	"customizations": {

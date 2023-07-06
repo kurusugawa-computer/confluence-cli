@@ -60,7 +60,7 @@ def print_json(target: Any, is_pretty: bool = False, output: Optional[Path] = No
         output_string(json.dumps(target, ensure_ascii=False), output)
 
 
-def set_logger(is_debug_mode:bool=False):
+def set_logger(is_debug_mode: bool = False):
     """
     デフォルトのロガーを設定する。パッケージ内のlogging.yamlを読み込む。
     """

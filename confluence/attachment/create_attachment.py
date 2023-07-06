@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 def create_attachments_from_file_list(api: Api, content_id: str, query_params: dict[str, Any], files: list[Path]) -> None:
     logger.info(f"{len(files)}件のファイルをアップロードします。")
     success_count = 0
-    total_count= 0 
+    total_count = 0
     for file in files:
         if not file.is_file():
             logger.warning(f"'{file}'はファイルでないので、アップロードしません。")
@@ -34,7 +34,7 @@ def create_attachments_from_file_list(api: Api, content_id: str, query_params: d
 
 def create_attachments_from_directory(api: Api, content_id: str, query_params: dict[str, Any], directory: Path) -> None:
     success_count = 0
-    total_count= 0 
+    total_count = 0
     if not directory.is_dir():
         logger.error(f"'{directory}'はディレクトリでないので、終了します。")
         return
