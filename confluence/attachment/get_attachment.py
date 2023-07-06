@@ -1,6 +1,7 @@
 import argparse
 import logging
 from pathlib import Path
+from typing import Any
 
 import confluence
 from confluence.common.cli import create_api_instance
@@ -12,8 +13,20 @@ logger = logging.getLogger(__name__)
 def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     content_id = args.content_id
-    result = api.get_attachments(content_id, query_params={"filename": args.filename, "mediaType": args.media_type})
-    print_json(result, is_pretty=True, output=args.output)
+
+    limit = 50
+    start = 0
+    results: list[dict[str, Any]] = []
+    while True:
+        result = api.get_attachments(
+            content_id, query_params={"filename": args.filename, "mediaType": args.media_type, "start": start, "limit": limit}
+        )
+        results.extend(result["results"])
+        if result["size"] < limit:
+            break
+        start = start + limit
+
+    print_json(results, is_pretty=True, output=args.output)
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):
