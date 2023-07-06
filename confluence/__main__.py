@@ -6,6 +6,7 @@ from typing import Optional
 
 import confluence
 import confluence.attachment.subcommand
+import confluence.local.subcommand
 from confluence.common.cli import PrettyHelpFormatter
 from confluence.common.utils import set_logger
 
@@ -20,6 +21,7 @@ def create_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command_name")
 
     confluence.attachment.subcommand.add_parser(subparsers)
+    confluence.local.subcommand.add_parser(subparsers)
     return parser
 
 
@@ -33,7 +35,6 @@ def main(arguments: Optional[Sequence[str]] = None):
     if hasattr(args, "subcommand_func"):
         try:
             set_logger()
-            logger.info(f"{sys.argv=}")
             args.subcommand_func(args)
         except Exception as e:
             logger.exception(e)

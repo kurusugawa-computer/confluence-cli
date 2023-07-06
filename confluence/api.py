@@ -1,11 +1,9 @@
-import functools
 import logging
 import mimetypes
 import time
 from pathlib import Path
 from typing import Any, Optional
 
-import backoff
 import requests
 from requests_toolbelt import sessions
 
@@ -60,11 +58,11 @@ class Api:
         response.raise_for_status()
         return response.json()
 
-    def get_attachments(self, content_id:str, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+    def get_attachments(self, content_id: str, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
         url = f"content/{content_id}/child/attachment"
         return self._request("get", url, params=query_params)
 
-    def create_attachment(self, content_id:str, file: Path, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+    def create_attachment(self, content_id: str, file: Path, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
         headers = {"X-Atlassian-Token": "nocheck"}
         url = f"content/{content_id}/child/attachment"
         mime_type, _ = mimetypes.guess_type(file)
