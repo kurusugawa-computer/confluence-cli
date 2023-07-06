@@ -32,10 +32,9 @@ def main(args: argparse.Namespace) -> None:
         logger.info(f"page title='{page['title']}'の削除対象の添付ファイルは0件なので、終了します。")
         return
 
-    logger.info(
-        f"page title='{page['title']}'の添付ファイル{len(results)}件を削除します。完全に削除します。元に戻すことはできません。注意してください。"
-    )
+    logger.info(f"page title='{page['title']}'の添付ファイル{len(results)}件を削除します。")
 
+    is_purged = args.purge
     success_count = 0
     all_yes = False
     for attachment in results:
@@ -43,10 +42,19 @@ def main(args: argparse.Namespace) -> None:
         attachment_title = attachment["title"]
         try:
             if not all_yes:
-                yes, all_yes = prompt_yesnoall(f"id='{attachment_id}', title='{attachment_title}'を削除しますか？")
+                confirm_message = f"id='{attachment_id}', title='{attachment_title}'を削除しますか？"
+                if is_purged:
+                    confirm_message += "ゴミ箱からも完全に削除します。復元できません。"
+                else:
+                    confirm_message += "ゴミ箱に移動します。"
+
+                yes, all_yes = prompt_yesnoall(confirm_message)
             if yes or all_yes:
-                logger.debug(f"id='{attachment_id}', title='{attachment_title}'を削除します。 :: status='{attachment['status']}'")
-                api.delete_content(attachment_id)
+                logger.debug(f"id='{attachment_id}', title='{attachment_title}'をゴミ箱に移動します。 ")
+                api.delete_content(attachment_id, query_params={"status": "current"})
+                if is_purged:
+                    logger.debug(f"id='{attachment_id}', title='{attachment_title}'をゴミ箱から完全に削除します。 ")
+                    api.delete_content(attachment_id, query_params={"status": "trashed"})
                 success_count += 1
 
         except Exception:
@@ -61,16 +69,15 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):
 
     parser.add_argument("--filename", help="filter parameter to return only the Attachment with the matching file name")
     parser.add_argument("--media_type", help="filter parameter to return only Attachments with a matching Media-Type")
-
+    parser.add_argument("--purge", action="store_true", help="指定すると、ゴミ箱からも完全に削除します。復元できません。")
     parser.set_defaults(subcommand_func=main)
 
 
 def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse.ArgumentParser:
     subcommand_name = "delete"
     subcommand_help = "添付ファイルを削除します。"
-    subcommand_description = "添付ファイルを削除します。ゴミ箱へ移動するのではなく、完全に削除します。注意して利用してください。"
 
-    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help, subcommand_description)
+    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
 
     add_arguments_to_parser(parser)
     return parser
