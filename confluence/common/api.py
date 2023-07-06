@@ -21,7 +21,7 @@ class Api:
 
     """
 
-    def __init__(self, username: str, password: str, base_url: str, delay_second: int = 1) -> None:
+    def __init__(self, username: str, password: str, base_url: str, delay_second: float = 1) -> None:
         if delay_second < 0.3:
             raise RuntimeError(f"引数'delay_second'は0.3以上にしてください。 :: {delay_second=}")
 
@@ -29,10 +29,8 @@ class Api:
         self.session = sessions.BaseUrlSession(base_url=base_url + "/rest/api/")
         self.session.auth = (username, password)
 
-        self.content = self.Content(self.session)
-
         self.delay_second = delay_second
-        self._previous_timestamp = 0
+        self._previous_timestamp: float = 0
 
     def _request(self, http_method: str, url: str, **kwargs) -> Any:  # noqa: ANN401
         """

@@ -1,5 +1,5 @@
 ifndef SOURCE_FILES
-	export SOURCE_FILES:=confluence scripts
+	export SOURCE_FILES:=confluence
 endif
 ifndef TEST_FILES
 	export TEST_FILES:=tests
