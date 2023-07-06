@@ -2,8 +2,8 @@ import argparse
 from typing import Optional
 
 import confluence
-import confluence.local.convert_html_to_xml
 import confluence.attachment.get_attachment
+import confluence.local.convert_html_to_xml
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):

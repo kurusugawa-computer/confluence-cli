@@ -1,6 +1,5 @@
 import argparse
 import logging
-import sys
 from collections.abc import Sequence
 from typing import Optional
 
@@ -34,7 +33,7 @@ def main(arguments: Optional[Sequence[str]] = None):
 
     if hasattr(args, "subcommand_func"):
         try:
-            set_logger()
+            set_logger(args.debug)
             args.subcommand_func(args)
         except Exception as e:
             logger.exception(e)

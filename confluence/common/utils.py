@@ -60,7 +60,7 @@ def print_json(target: Any, is_pretty: bool = False, output: Optional[Path] = No
         output_string(json.dumps(target, ensure_ascii=False), output)
 
 
-def set_logger():
+def set_logger(is_debug_mode:bool=False):
     """
     デフォルトのロガーを設定する。パッケージ内のlogging.yamlを読み込む。
     """
@@ -69,4 +69,8 @@ def set_logger():
         raise RuntimeError("confluence/data/logging.yaml の読み込みに失敗しました。")
 
     logging_config = yaml.safe_load(data.decode("utf-8"))
+
+    if is_debug_mode:
+        logging_config["loggers"]["confluence"]["level"] = "DEBUG"
+
     logging.config.dictConfig(logging_config)

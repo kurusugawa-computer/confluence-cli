@@ -1,29 +1,74 @@
 import argparse
 import logging
 from pathlib import Path
+from typing import Any
 
 import confluence
+from confluence.common.api import Api
 from confluence.common.cli import create_api_instance
 
 logger = logging.getLogger(__name__)
 
 
+def create_attachments_from_file_list(api: Api, content_id: str, query_params: dict[str, Any], files: list[Path]) -> None:
+    logger.info(f"{len(files)}件のファイルをアップロードします。")
+    success_count = 0
+    total_count= 0 
+    for file in files:
+        if not file.is_file():
+            logger.warning(f"'{file}'はファイルでないので、アップロードしません。")
+            continue
+        try:
+            total_count += 1
+            api.create_attachment(content_id, file, query_params=query_params)
+            logger.debug(f"{total_count+1}件目: '{file}'をアップロードしました。")
+        except Exception:
+            logger.warning(f"'{file}'のアップロードに失敗しました。", exc_info=True)
+            continue
+
+        logger.debug(f"'{file}'をアップロードしました。")
+        success_count += 1
+
+    logger.info(f"{success_count}/{total_count} 件のファイルをアップロードしました。")
+
+
+def create_attachments_from_directory(api: Api, content_id: str, query_params: dict[str, Any], directory: Path) -> None:
+    success_count = 0
+    total_count= 0 
+    if not directory.is_dir():
+        logger.error(f"'{directory}'はディレクトリでないので、終了します。")
+        return
+
+    logger.info(f"ディレクトリ'{directory}'内のファイルをアップロードします。")
+
+    for file in directory.iterdir():
+        if not file.is_file():
+            continue
+        try:
+            total_count += 1
+            api.create_attachment(content_id, file, query_params=query_params)
+            logger.debug(f"{total_count}件目: '{file}'をアップロードしました。")
+        except Exception:
+            logger.warning(f"'{file}'のアップロードに失敗しました。", exc_info=True)
+            continue
+        success_count += 1
+
+    logger.info(f"{success_count}/{total_count}件のファイルをアップロードしました。")
+
+
 def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     content_id = args.content_id
+    query_params = {"allowDuplicated": args.allow_duplicated}
     if args.file is not None:
-        files: list[Path] = args.file
-        logger.info(f"{len(files)}件のファイルをアップロードします。")
-        success_count = 0
-        for file in files:
-            if not file.is_file():
-                logger.warning(f"'{file}'はファイルでないので、アップロードしません。")
-                continue
-            api.create_attachment(content_id, file, query_params={"allowDuplicated": args.allow_duplicated})
-            logger.debug(f"'{file}'をアップロードしました。")
-            success_count += 1
-
-        logger.info(f"{success_count}件のファイルをアップロードします。")
+        create_attachments_from_file_list(
+            api,
+            content_id,
+            query_params,
+            args.file,
+        )
+    elif args.dir is not None:
+        create_attachments_from_directory(api, content_id, query_params, args.dir)
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):

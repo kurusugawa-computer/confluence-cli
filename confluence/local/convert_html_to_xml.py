@@ -6,6 +6,7 @@ import pyquery
 from lxml.html import HtmlElement, fromstring
 
 import confluence
+import confluence.common.cli
 
 logger = logging.getLogger(__name__)
 

@@ -9,7 +9,7 @@ from typing import Optional
 
 from more_itertools import first_true
 
-from confluence.api import Api
+from confluence.common.api import Api
 
 logger = logging.getLogger(__name__)
 
@@ -80,6 +80,7 @@ def add_parser(
         """
         parent_parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
         group = parent_parser.add_argument_group(GLOBAL_OPTIONAL_ARGUMENTS_TITLE)
+        group.add_argument("--debug", action="store_true", help="指定するとデバッグ用のログが出力されます。")
         group.add_argument(
             "--base_url",
             type=str,
@@ -163,8 +164,7 @@ def prompt_yesnoall(msg: str) -> tuple[bool, bool]:
 def create_api_instance(args: argparse.Namespace) -> Api:
     base_url = args.base_url
 
-    if args.confluence_user_name is not None:
-        confluence_user_name: str = args.confluence_user_name
+    def with_command_line_user_name(confluence_user_name: str) -> Api:
         if args.confluence_user_password is not None:
             return Api(confluence_user_name, args.confluence_user_password, base_url)
         else:
@@ -174,9 +174,7 @@ def create_api_instance(args: argparse.Namespace) -> Api:
                 confluence_user_password = getpass.getpass("Enter Confluence Password: ")
             return Api(confluence_user_name, confluence_user_password, base_url)
 
-    if "CONFLUENCE_USER_NAME" in os.environ:
-        confluence_user_name: str = os.environ["CONFLUENCE_USER_NAME"]
-
+    def with_environ_user_name(confluence_user_name: str) -> Api:
         if "CONFLUENCE_USER_PASSWORD" in os.environ:
             return Api(confluence_user_name, os.environ["CONFLUENCE_USER_PASSWORD"], base_url)
         else:
@@ -186,13 +184,25 @@ def create_api_instance(args: argparse.Namespace) -> Api:
                 confluence_user_password = getpass.getpass("Enter Confluence Password: ")
             return Api(confluence_user_name, confluence_user_password, base_url)
 
+    def with_stdin_user_name() -> Api:
+        # 標準入力から認証情報を取得する
+        confluence_user_name = ""
+        while confluence_user_name == "":
+            confluence_user_name = input("Enter Confluence User Name: ")
+
+        confluence_user_password = ""
+        while confluence_user_password == "":
+            confluence_user_password = getpass.getpass("Enter Confluence Password: ")
+
+        return Api(confluence_user_name, confluence_user_password, base_url)
+
+    if args.confluence_user_name is not None:
+        # コマンドラインから取得する
+        return with_command_line_user_name(args.confluence_user_name)
+
+    if "CONFLUENCE_USER_NAME" in os.environ:
+        # 環境変数から取得する
+        return with_environ_user_name(os.environ["CONFLUENCE_USER_NAME"])
+
     # 標準入力から認証情報を取得する
-    confluence_user_name = ""
-    while confluence_user_name == "":
-        confluence_user_name = input("Enter Confluence User Name: ")
-
-    confluence_user_password = ""
-    while confluence_user_password == "":
-        confluence_user_password = getpass.getpass("Enter Confluence Password: ")
-
-    return Api(confluence_user_name, confluence_user_password, base_url)
+    return with_stdin_user_name()

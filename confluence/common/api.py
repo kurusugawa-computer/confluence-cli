@@ -21,7 +21,7 @@ class Api:
 
     """
 
-    def __init__(self, username: str, password: str, base_url: str, delay_second: int = 10) -> None:
+    def __init__(self, username: str, password: str, base_url: str, delay_second: int = 1) -> None:
         self.base_url = base_url
         self.session = sessions.BaseUrlSession(base_url=base_url + "/rest/api/")
         self.session.auth = (username, password)
