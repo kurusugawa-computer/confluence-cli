@@ -4,7 +4,7 @@ from typing import Any
 
 import confluence
 from confluence.common.api import Api
-from confluence.common.cli import create_api_instance
+from confluence.common.cli import create_api_instance, prompt_yesnoall
 
 logger = logging.getLogger(__name__)
 
@@ -26,18 +26,32 @@ def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     content_id = args.content_id
 
+    page = api.get_content_by_id(content_id)
     results: list[dict[str, Any]] = get_attachments(api, content_id, filename=args.filename, media_type=args.media_type)
-    logger.info(f"{len(results)}件の添付ファイルを削除します。")
+    if len(results) == 0:
+        logger.info(f"page title='{page['title']}'の削除対象の添付ファイルは0件なので、終了します。")
+        return
 
+    logger.info(f"page title='{page['title']}'の添付ファイル{len(results)}件を削除します。")
+
+    success_count = 0
+    all_yes = False
     for attachment in results:
         attachment_id = attachment["id"]
         attachment_title = attachment["title"]
         try:
-            logger.debug(f"id='{attachment_id}', title='{attachment_title}'を削除します。 :: status='{attachment['status']}'")
-            api.delete_content(attachment_id)
+            if not all_yes:
+                yes, all_yes = prompt_yesnoall(f"id='{attachment_id}', title='{attachment_title}'を削除しますか？")
+            if yes or all_yes:
+                logger.debug(f"id='{attachment_id}', title='{attachment_title}'を削除します。 :: status='{attachment['status']}'")
+                api.delete_content(attachment_id)
+                success_count += 1
+
         except Exception:
             logger.warning(f"id='{attachment_id}', title='{attachment_title}'の削除に失敗しました。", exc_info=True)
             continue
+
+    logger.info(f"{success_count}件の添付ファイルを削除しました。")
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):
