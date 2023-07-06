@@ -1,15 +1,10 @@
-import copy
-import datetime
 import json
 import logging.config
 import pkgutil
-import sys
 from pathlib import Path
 from typing import Any, Optional, TypeVar
 
-
 import yaml
-
 
 logger = logging.getLogger(__name__)
 
@@ -63,8 +58,6 @@ def print_json(target: Any, is_pretty: bool = False, output: Optional[Path] = No
         output_string(json.dumps(target, indent=2, ensure_ascii=False), output)
     else:
         output_string(json.dumps(target, ensure_ascii=False), output)
-
-
 
 
 def set_logger():

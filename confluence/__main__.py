@@ -8,6 +8,7 @@ import confluence
 import confluence.attachment.subcommand
 from confluence.common.cli import PrettyHelpFormatter
 from confluence.common.utils import set_logger
+
 logger = logging.getLogger(__name__)
 
 

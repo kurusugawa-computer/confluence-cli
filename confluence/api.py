@@ -1,5 +1,7 @@
 import functools
 import logging
+import mimetypes
+import time
 from pathlib import Path
 from typing import Any, Optional
 
@@ -12,55 +14,6 @@ logger = logging.getLogger(__name__)
 QueryParams = dict[str, Any]
 
 
-def my_backoff(function):
-    """
-    リトライが必要な場合はリトライする
-    """
-
-    @functools.wraps(function)
-    def wrapped(*args, **kwargs):
-        def should_retry(e) -> bool:
-            """
-            リトライするかどうか
-            status codeが5xxのときまたはToo many Requests(429)のときはリトライする。
-            ただし500はリトライしない
-            https://requests.kennethreitz.org/en/master/user/quickstart/#errors-and-exceptions
-
-            Args:
-                e: exception
-
-            Returns:
-                True: give up(リトライしない), False: リトライする
-
-            """
-            if isinstance(e, requests.exceptions.HTTPError):
-                if e.response is None:
-                    return True
-
-                # status_codeの範囲は4XX ~ 5XX
-                status_code = e.response.status_code
-
-                if status_code == requests.codes.too_many_requests:
-                    return False
-                elif 400 <= status_code < 500:
-                    return True
-                elif 500 <= status_code < 600:
-                    return False
-
-            return False
-
-        return backoff.on_exception(
-            backoff.expo,
-            (requests.exceptions.RequestException, ConnectionError),
-            jitter=backoff.full_jitter,
-            max_time=300,
-            giveup=should_retry,
-            logger=logger,
-        )(function)(*args, **kwargs)
-
-    return wrapped
-
-
 class Api:
     """
     https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/
@@ -70,18 +23,59 @@ class Api:
 
     """
 
-    def __init__(self, username: str, password: str, base_url: str) -> None:
+    def __init__(self, username: str, password: str, base_url: str, delay_second: int = 10) -> None:
         self.base_url = base_url
         self.session = sessions.BaseUrlSession(base_url=base_url + "/rest/api/")
         self.session.auth = (username, password)
 
         self.content = self.Content(self.session)
 
+        self.delay_second = delay_second
+        self._previous_timestamp = 0
+
+    def _request(self, http_method: str, url: str, **kwargs) -> Any:
+        """
+        HTTP Requestを投げて、Responseを返す。
+
+        Args:
+            http_method:
+            url_path:
+            query_params:
+            header_params:
+            request_body:
+            log_response_with_error: HTTP Errorが発生したときにレスポンスの中身をログに出力するか否か
+
+        Returns:
+            responseの中身。content_typeにより型が変わる。
+            application/jsonならdict型, text/*ならばstr型, それ以外ならばbite型。
+
+        """
+        now = time.time()
+        diff_time = now - self._previous_timestamp
+        if diff_time < self.delay_second:
+            time.sleep(self.delay_second - diff_time)
+
+        response = self.session.request(http_method, url, **kwargs)
+        self._previous_timestamp = time.time()
+        response.raise_for_status()
+        return response.json()
+
+    def get_attachments(self, content_id:str, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+        url = f"content/{content_id}/child/attachment"
+        return self._request("get", url, params=query_params)
+
+    def create_attachment(self, content_id:str, file: Path, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+        headers = {"X-Atlassian-Token": "nocheck"}
+        url = f"content/{content_id}/child/attachment"
+        mime_type, _ = mimetypes.guess_type(file)
+        with file.open("rb") as f:
+            files = {"file": (file.name, f, mime_type)}
+            return self._request("post", url, params=query_params, files=files, headers=headers)
+
     class Content:
         def __init__(self, session: requests.Session) -> None:
             self.session = session
 
-        @my_backoff
         def get_content(self, query_params: Optional[QueryParams] = None) -> list[dict[str, Any]]:
             """
             Returns a paginated list of Content.
@@ -90,7 +84,6 @@ class Api:
             """
             return self.session.get("content", params=query_params)
 
-        @my_backoff
         def get_content_by_id(self, id: str, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
             """
             Returns a piece of Content.
@@ -100,7 +93,6 @@ class Api:
             response = self.session.get(f"content/{id}", params=query_params)
             return response
 
-        @my_backoff
         def delete(self, id: str, query_params: Optional[QueryParams] = None) -> None:
             """
             Trashes or purges a piece of Content, based on its {@link ContentType} and {@link ContentStatus}.
@@ -111,7 +103,6 @@ class Api:
             response = self.session.delete(f"content/{id}", params=query_params)
             return response
 
-        @my_backoff
         def get_history(self, id: str, query_params: Optional[QueryParams] = None):
             """Returns the history of a particular piece of content
 
@@ -120,7 +111,6 @@ class Api:
             response = self.session.get(f"content/{id}/history", params=query_params)
             return response.json()
 
-        @my_backoff
         def search(self, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
             """
             Fetch a list of content using the Confluence Query Language (CQL)
@@ -135,21 +125,6 @@ class Api:
             def __init__(self, session: requests.Session, content_id: str) -> None:
                 self.session = session
                 self.content_id = content_id
-
-            def get_attachments(self, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
-                response = self.session.get(f"content/{self.content_id}/child/attachment", params=query_params)
-                print(f"{self.session=}")
-                print(f"{response.request.url=}, {response.status_code=}")
-                print(f"{response.text=}")
-                return response.json()
-
-            def create_attachment(self, file: Path, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
-                headers = {"X-Atlassian-Token": "nocheck"}
-                with file.open("rb") as f:
-                    files = {"file": f}
-                    response = self.session.post(f"content/{self.content_id}/child/attachment", params=query_params, files=files, headers=headers)
-                response.raise_for_status()
-                return response.json()
 
         def __init__(self, session: requests.Session, content_id: str) -> None:
             self.content_id = content_id

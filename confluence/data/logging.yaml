@@ -13,7 +13,7 @@ loggers:
     level: DEBUG
 root:
   level: INFO
-  handlers: [fileRotatingHandler, consoleHandler]
+  handlers: [consoleHandler]
 
 # Avoid disabling default logger https://docs.djangoproject.com/ja/2.1/topics/logging/#configuring-logging
 disable_existing_loggers: False
