@@ -32,7 +32,9 @@ def main(args: argparse.Namespace) -> None:
         logger.info(f"page title='{page['title']}'の削除対象の添付ファイルは0件なので、終了します。")
         return
 
-    logger.info(f"page title='{page['title']}'の添付ファイル{len(results)}件を削除します。")
+    logger.info(
+        f"page title='{page['title']}'の添付ファイル{len(results)}件を削除します。完全に削除します。元に戻すことはできません。注意してください。"
+    )
 
     success_count = 0
     all_yes = False
@@ -66,8 +68,9 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):
 def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse.ArgumentParser:
     subcommand_name = "delete"
     subcommand_help = "添付ファイルを削除します。"
+    subcommand_description = "添付ファイルを削除します。ゴミ箱へ移動するのではなく、完全に削除します。注意して利用してください。"
 
-    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
+    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help, subcommand_description)
 
     add_arguments_to_parser(parser)
     return parser

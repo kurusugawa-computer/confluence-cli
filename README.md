@@ -11,7 +11,7 @@
 
 
 ### attachment delete
-添付ファイルの削除
+添付ファイルを削除します。ゴミ箱へ移動するのではなく、完全に削除します。
 
 ### local convert_html
 HTMLをConfluence用のXMLに変換します。
