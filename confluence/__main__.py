@@ -1,25 +1,48 @@
+import argparse
 import logging
-
-import click
+from collections.abc import Sequence
+from typing import Optional
 
 import confluence
-from confluence.command.address import address
+import confluence.attachment.subcommand
+import confluence.local.subcommand
+from confluence.common.cli import PrettyHelpFormatter
+from confluence.common.utils import set_logger
+
+logger = logging.getLogger(__name__)
 
 
-def set_logger():
-    logging_formatter = "%(levelname)-8s : %(asctime)s : %(filename)s : %(name)s : %(funcName)s : %(message)s"
-    logging.basicConfig(format=logging_formatter)
-    logging.getLogger(__package__).setLevel(level=logging.DEBUG)
+def create_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Command Line Interface for Confluence", formatter_class=PrettyHelpFormatter, allow_abbrev=False)
+    parser.add_argument("--version", action="version", version=f"confluence {confluence.__version__}")
+    parser.set_defaults(command_help=parser.print_help)
+
+    subparsers = parser.add_subparsers(dest="command_name")
+
+    confluence.attachment.subcommand.add_parser(subparsers)
+    confluence.local.subcommand.add_parser(subparsers)
+    return parser
 
 
-@click.group()
-@click.version_option(version=confluence.__version__)
-def cli():
-    set_logger()
+def main(arguments: Optional[Sequence[str]] = None):
+    parser = create_parser()
+    if arguments is None:
+        args = parser.parse_args()
+    else:
+        args = parser.parse_args(arguments)
 
+    if hasattr(args, "subcommand_func"):
+        try:
+            set_logger(args.debug)
+            args.subcommand_func(args)
+        except Exception as e:
+            logger.exception(e)
+            raise e
 
-cli.add_command(address)
+    else:
+        # 未知のサブコマンドの場合はヘルプを表示
+        args.command_help()
 
 
 if __name__ == "__main__":
-    cli()
+    main()

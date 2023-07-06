@@ -36,5 +36,5 @@ disable =
 
 # ===== Must modify  =====
     empty-docstring,
-
+    broad-exception-caught,
 

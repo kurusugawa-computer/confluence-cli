@@ -1,0 +1,19 @@
+version: 1
+formatters:
+  customFormatter:
+    format: '%(levelname)-8s : %(asctime)s : %(name)-30s : %(message)s'
+handlers:
+  consoleHandler:
+    class: logging.StreamHandler
+    formatter: customFormatter
+loggers:
+  __main__:
+    level: INFO
+  confluence:
+    level: INFO
+root:
+  level: INFO
+  handlers: [consoleHandler]
+
+# Avoid disabling default logger https://docs.djangoproject.com/ja/2.1/topics/logging/#configuring-logging
+disable_existing_loggers: False

@@ -1,21 +1,25 @@
-ifndef FORMAT_FILES
-	export FORMAT_FILES:=confluence tests
+ifndef SOURCE_FILES
+	export SOURCE_FILES:=confluence
 endif
-ifndef LINT_FILES
-	export LINT_FILES:=confluence
+ifndef TEST_FILES
+	export TEST_FILES:=tests
 endif
 
 .PHONY: format lint test docs publish
 
 format:
-	poetry run autoflake  --in-place --remove-all-unused-imports  --ignore-init-module-imports --recursive ${FORMAT_FILES}
-	poetry run isort ${FORMAT_FILES}
-	poetry run black ${FORMAT_FILES}
+	poetry run black ${SOURCE_FILES}  ${TEST_FILES} --preview
+	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES} --fix-only --exit-zero
+	
+
 
 lint:
-	poetry run mypy ${LINT_FILES}
-	poetry run flake8 ${LINT_FILES}
-	poetry run pylint --jobs=0 ${LINT_FILES}
+	poetry run ruff ${SOURCE_FILES}
+	# テストコードはチェックを緩和する
+	# pygrep-hooks, flake8-datetimez, line-too-long, flake8-annotations, unused-noqa
+	poetry run ruff check ${TEST_FILES} --ignore PGH,DTZ,E501,ANN,RUF100
+	poetry run mypy ${SOURCE_FILES}
+	poetry run pylint --jobs=0 ${SOURCE_FILES}
 
 test:
 	# 並列実行してレポートも出力する

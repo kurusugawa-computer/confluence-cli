@@ -1,10 +1,12 @@
+import argparse
 import logging
-from argparse import ArgumentParser
 from pathlib import Path
 
 import pyquery
 from lxml.html import HtmlElement, fromstring
 
+import confluence
+import confluence.common.cli
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +31,7 @@ def convert_img_elm(img_elm: HtmlElement):
     """
     img_elm.tag = "ac:image"
     src_value: str = img_elm.attrib.get("src")
-    if src_value.startswith("http:") or src_value.startswith("https:"):
+    if src_value.startswith(("http:", "https:")):
         url_elm = fromstring("<ri:url/>")
         # コロン付きのタグが生成できないので、tagを改めて置換する
         url_elm.tag = "ri:url"
@@ -78,15 +80,11 @@ def convert(input_html_file: Path, output_html_file: Path) -> None:
     output_html_file.write_text(html_data, encoding="utf-8")
 
 
-def main() -> None:
-    parser = create_parser()
-    args = parser.parse_args()
-
+def main(args: argparse.Namespace) -> None:
     convert(args.input_html, args.output_html)
 
 
-def create_parser() -> ArgumentParser:
-    parser = ArgumentParser(description="HTMLをConfluence用のXMLに変換します。")  # noqa: E501
+def add_arguments_to_parser(parser: argparse.ArgumentParser):
     parser.add_argument(
         "input_html",
         type=Path,
@@ -97,8 +95,15 @@ def create_parser() -> ArgumentParser:
         type=Path,
         help="変換先の出力用HTML",
     )
+
+    parser.set_defaults(subcommand_func=main)
+
+
+def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse.ArgumentParser:
+    subcommand_name = "convert_html"
+    subcommand_help = "HTMLをConfluence用のXMLに変換します。"
+
+    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
+
+    add_arguments_to_parser(parser)
     return parser
-
-
-if __name__ == "__main__":
-    main()

@@ -1,21 +1,18 @@
 [tool.poetry]
-name = "kurusugawa-cli"
+name = "kci-confluence-cli"
 version = "0.1.0"
-description = "来栖川用語を出力するCLIです"
-authors = ["来栖川 芹香"]
+description = "来栖川電算のConfluenceを操作するCLIです。"
+authors = ["Kurusugawa Computer Inc."]
+license = "MIT"
 packages = [
     { include = "confluence" }
 ]
 readme="README.md"
-repository="https://github.com/kurusugawa-computer/kci-python-devcontainer"
+repository="https://github.com/kurusugawa-computer/confluence-cli"
 classifiers = [
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Environment :: Console",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
         "Topic :: Utilities",
         "Operating System :: OS Independent",
 ]
@@ -26,7 +23,8 @@ requests = "*"
 backoff = "*"
 pyquery = "^2"
 requests-toolbelt = "^0.10.1"
-
+more_itertools = "*"
+pyyaml = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7"
@@ -62,16 +60,10 @@ ipython = "*"
 
 
 [tool.poetry.scripts]
-kurusugawa-cli = "confluence.__main__:cli"
+confluence = "confluence.__main__:main"
 
 [tool.black]
-line-length = 120
-
-[tool.isort]
-profile = "black"
-line_length = 120
-# `__init__.py`の順番が変わるとエラーになる可能性があるので、スキップする
-skip="kci/__init__.py"
+line-length = 150
 
 [tool.mypy]
 # スタブが無いパッケージのエラーは無視させる.サードパーティのライブラリに型情報がないケースもあるため
@@ -79,8 +71,66 @@ ignore_missing_imports = true
 # 型ヒントが付いていない関数もチェックする
 check_untyped_defs = true
 
+
+[tool.ruff]
+target-version = "py39"
+
+ignore = [
+    "G004", # `logging-f-string` : loggingでf-stringを使いたいので無視する
+    "PD901", #すでに`df`という変数をいろんなところで使っているため
+    "PD002", #すでにpandasで`inplace=True`はいろんなところで使っているため
+    "RUF001", # 全角記号など`ambiguous unicode character`も使いたいため
+    "RUF002",# 全角記号など`ambiguous unicode character`も使いたいため
+    "RUF003",# 全角記号など`ambiguous unicode character`も使いたいため
+    "PLC1901", # compare-to-empty-string : `if a == "`のように空文字列で直接比較したいときがあるため
+    "PLR2004", # magic-value-comparison: listのサイズで判定するときがよくあるため
+    "ANN101", # missing-type-self: 引数selfには型ヒントは付けていないため
+    "ANN102", # missing-type-cls: 引数clsには型ヒントは付けていないため
+    "ANN002", # missing-type-args
+    "ANN003", # missing-type-kwargs
+    "ERA", # : 役立つこともあるが、コメントアウトしていないコードも警告されるので無視する
+
+    # いずれ無視しないようにする
+    "ANN201", # missing-return-type-public-function: 
+    "ANN202", # missing-return-type-private-function:
+    "PLR",  # pylint Refactor 
+
+    # 以下のルールはannofabcliのコードに合っていないので無効化した
+    "RSE", # flake8-raise
+    "D", # pydocstyle, Docstringを中途半端にしか書いていないので、除外する
+    "C90", # mccabe 
+    "T20", # flake8-print
+    "SLF", #  flake8-self
+    "BLE", # flake8-blind-except
+    "FBT", # flake8-boolean-trap
+    "TRY", # tryceratops 
+    "COM", # flake8-commas 
+    "S", # flake8-bandit
+    "EM",#flake8-errmsg
+    "EXE", # flake8-executable
+    "ICN", # flake8-import-conventions
+    "RET",#flake8-return
+    "SIM",#flake8-simplify
+    "TCH", # flake8-type-checking
+    "PTH", #pathlibを使わないコードが多いので、除外する
+    "ISC", #flake8-implicit-str-concat
+    "N", # pep8-naming
+    "PT", # flake8-pytest-style
+]
+
+line-length = 150
+select = [
+    "ALL"
+]
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.pylint]
+max-args = 10
+
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 
