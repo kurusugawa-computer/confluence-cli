@@ -3,6 +3,7 @@ from typing import Optional
 
 import confluence
 import confluence.attachment.create_attachment
+import confluence.attachment.delete_attachment
 import confluence.attachment.get_attachment
 
 
@@ -11,6 +12,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):
 
     # サブコマンドの定義
     confluence.attachment.create_attachment.add_parser(subparsers)
+    confluence.attachment.delete_attachment.add_parser(subparsers)
     confluence.attachment.get_attachment.add_parser(subparsers)
 
 

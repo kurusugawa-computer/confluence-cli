@@ -57,11 +57,11 @@ class Api:
         response = self.session.request(http_method, url, **kwargs)
         self._previous_timestamp = time.time()
         response.raise_for_status()
-        return response.json()
+        return response
 
     def get_attachments(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
         url = f"content/{content_id}/child/attachment"
-        return self._request("get", url, params=query_params)
+        return self._request("get", url, params=query_params).json()
 
     def create_attachment(self, content_id: str, file: Path, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
         headers = {"X-Atlassian-Token": "nocheck"}
@@ -69,7 +69,7 @@ class Api:
         mime_type, _ = mimetypes.guess_type(file)
         with file.open("rb") as f:
             files = {"file": (file.name, f, mime_type)}
-            return self._request("post", url, params=query_params, files=files, headers=headers)
+            return self._request("post", url, params=query_params, files=files, headers=headers).json()
 
     def get_content(self, *, query_params: Optional[QueryParams] = None) -> list[dict[str, Any]]:
         """
@@ -77,7 +77,7 @@ class Api:
 
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getContent
         """
-        return self._request("get", "content", params=query_params)
+        return self._request("get", "content", params=query_params).json()
 
     def get_content_by_id(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
         """
@@ -85,23 +85,25 @@ class Api:
 
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getContentById
         """
-        return self._request("get", f"content/{content_id}", params=query_params)
+        return self._request("get", f"content/{content_id}", params=query_params).json()
 
     def delete_content(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> None:
         """
         Trashes or purges a piece of Content, based on its {@link ContentType} and {@link ContentStatus}.
 
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-delete
-        """
 
-        return self._request("delete", f"content/{content_id}", params=query_params)
+        Notes:
+            クエリパラーメタ`status`に`trashed`を指定すると400エラーが発生した。
+        """
+        self._request("delete", f"content/{content_id}", params=query_params)
 
     def get_content_history(self, content_id: str, *, query_params: Optional[QueryParams] = None):
         """Returns the history of a particular piece of content
 
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getHistory
         """
-        return self._request("get", f"content/{content_id}/history", params=query_params)
+        return self._request("get", f"content/{content_id}/history", params=query_params).json()
 
     def search_content(self, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
         """
