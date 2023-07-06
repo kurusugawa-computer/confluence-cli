@@ -1,13 +1,14 @@
 [tool.poetry]
-name = "kurusugawa-cli"
+name = "kci-confluence-cli"
 version = "0.1.0"
-description = "来栖川用語を出力するCLIです"
-authors = ["来栖川 芹香"]
+description = "来栖川電算のConfluenceを操作するCLIです。"
+authors = ["Kurusugawa Computer Inc."]
+license = "MIT"
 packages = [
     { include = "confluence" }
 ]
 readme="README.md"
-repository="https://github.com/kurusugawa-computer/kci-python-devcontainer"
+repository="https://github.com/kurusugawa-computer/confluence-cli"
 classifiers = [
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -22,7 +23,8 @@ requests = "*"
 backoff = "*"
 pyquery = "^2"
 requests-toolbelt = "^0.10.1"
-
+more_itertools = "*"
+pyyaml = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7"
@@ -58,7 +60,7 @@ ipython = "*"
 
 
 [tool.poetry.scripts]
-kurusugawa-cli = "confluence.__main__:cli"
+confluence = "confluence.__main__:main"
 
 [tool.black]
 line-length = 150
@@ -126,7 +128,6 @@ convention = "google"
 
 [tool.ruff.pylint]
 max-args = 10
-
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

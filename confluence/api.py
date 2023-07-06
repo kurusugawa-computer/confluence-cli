@@ -1,11 +1,11 @@
+import functools
+import logging
+from pathlib import Path
 from typing import Any, Optional
 
+import backoff
 import requests
 from requests_toolbelt import sessions
-import functools
-import backoff
-import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +70,7 @@ class Api:
 
     """
 
-    def __init__(self, username: str, password: str, base_url: str):
+    def __init__(self, username: str, password: str, base_url: str) -> None:
         self.base_url = base_url
         self.session = sessions.BaseUrlSession(base_url=base_url + "/rest/api/")
         self.session.auth = (username, password)
@@ -88,10 +88,10 @@ class Api:
 
             https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getContent
             """
-            return self.session.get(f"content", params=query_params)
+            return self.session.get("content", params=query_params)
 
         @my_backoff
-        def get_content_by_id(self, id: str, query_params: Optional[QueryParams] = None)  -> dict[str, Any]:
+        def get_content_by_id(self, id: str, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
             """
             Returns a piece of Content.
 
@@ -127,7 +127,7 @@ class Api:
 
             https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-search
             """
-            response = self.session.get(f"content/search", params=query_params)
+            response = self.session.get("content/search", params=query_params)
             return response.json()
 
     class ContentById:
@@ -143,7 +143,15 @@ class Api:
                 print(f"{response.text=}")
                 return response.json()
 
-        def __init__(self, session: requests.Session, content_id: str):
+            def create_attachment(self, file: Path, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+                headers = {"X-Atlassian-Token": "nocheck"}
+                with file.open("rb") as f:
+                    files = {"file": f}
+                    response = self.session.post(f"content/{self.content_id}/child/attachment", params=query_params, files=files, headers=headers)
+                response.raise_for_status()
+                return response.json()
+
+        def __init__(self, session: requests.Session, content_id: str) -> None:
             self.content_id = content_id
             self.child_attachment = Api.ContentById.ChildAttachment(session, content_id)
 

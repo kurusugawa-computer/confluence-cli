@@ -3,22 +3,17 @@ Command Line Interfaceの共通部分
 """
 import argparse
 import getpass
-import json
 import logging
 import os
-from enum import Enum
-from typing import Any, List, Optional, Tuple
-from confluence.api import Api
+from typing import Optional
+
 from more_itertools import first_true
+
+from confluence.api import Api
 
 logger = logging.getLogger(__name__)
 
 COMMAND_LINE_ERROR_STATUS_CODE = 2
-
-
-class OutputFormat(Enum):
-    CSV = "csv"d=
-    JSON = "json"
 
 
 class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
@@ -88,8 +83,8 @@ def add_parser(
         group.add_argument(
             "--base_url",
             type=str,
-            default='https://kurusugawa.jp/confluence',
-            help=f"アクセスするConfluenceのURL。アクセスするURLは'{base_url}'/rest/api/...'です。",
+            default="https://kurusugawa.jp/confluence",
+            help="アクセスするConfluenceのURL。アクセスするURLは'{base_url}'/rest/api/...'です。",
         )
         group.add_argument("--confluence_user_name", type=str, help="Confluenceにログインする際のユーザー名")
         group.add_argument("--confluence_user_password", type=str, help="Confluenceにログインする際のパスワード")
@@ -113,9 +108,7 @@ def add_parser(
 
     # 引数グループに"global optional group"がある場合は、"--help"オプションをデフォルトの"optional"グループから、"global optional arguments"グループに移動する
     # https://ja.stackoverflow.com/a/57313/19524
-    global_optional_argument_group = first_true(
-        parser._action_groups, pred=lambda e: e.title == GLOBAL_OPTIONAL_ARGUMENTS_TITLE
-    )
+    global_optional_argument_group = first_true(parser._action_groups, pred=lambda e: e.title == GLOBAL_OPTIONAL_ARGUMENTS_TITLE)
     if global_optional_argument_group is not None:
         # optional グループの 0番目が help なので取り出す
         help_action = parser._optionals._group_actions.pop(0)
@@ -124,7 +117,6 @@ def add_parser(
         global_optional_argument_group._group_actions.insert(0, help_action)
 
     return parser
-
 
 
 def prompt_yesno(msg: str) -> bool:
@@ -146,7 +138,7 @@ def prompt_yesno(msg: str) -> bool:
             return False
 
 
-def prompt_yesnoall(msg: str) -> Tuple[bool, bool]:
+def prompt_yesnoall(msg: str) -> tuple[bool, bool]:
     """
     標準入力で yes, no, all(すべてyes)を選択できるようにする。
     Args:
@@ -181,8 +173,6 @@ def create_api_instance(args: argparse.Namespace) -> Api:
             while confluence_user_password == "":
                 confluence_user_password = getpass.getpass("Enter Confluence Password: ")
             return Api(confluence_user_name, confluence_user_password, base_url)
-
-
 
     if "CONFLUENCE_USER_NAME" in os.environ:
         confluence_user_name: str = os.environ["CONFLUENCE_USER_NAME"]

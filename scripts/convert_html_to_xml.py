@@ -5,7 +5,6 @@ from pathlib import Path
 import pyquery
 from lxml.html import HtmlElement, fromstring
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -29,7 +28,7 @@ def convert_img_elm(img_elm: HtmlElement):
     """
     img_elm.tag = "ac:image"
     src_value: str = img_elm.attrib.get("src")
-    if src_value.startswith("http:") or src_value.startswith("https:"):
+    if src_value.startswith(("http:", "https:")):
         url_elm = fromstring("<ri:url/>")
         # コロン付きのタグが生成できないので、tagを改めて置換する
         url_elm.tag = "ri:url"
@@ -86,7 +85,7 @@ def main() -> None:
 
 
 def create_parser() -> ArgumentParser:
-    parser = ArgumentParser(description="HTMLをConfluence用のXMLに変換します。")  # noqa: E501
+    parser = ArgumentParser(description="HTMLをConfluence用のXMLに変換します。")
     parser.add_argument(
         "input_html",
         type=Path,
