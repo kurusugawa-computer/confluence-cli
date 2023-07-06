@@ -20,7 +20,7 @@ class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaul
     def _format_action(self, action: argparse.Action) -> str:
         return super()._format_action(action) + "\n"
 
-    def _get_help_string(self, action):
+    def _get_help_string(self, action):  # noqa: ANN001
         """引数説明用のメッセージを生成する。
         不要なデフォルト値（--debug や オプショナルな引数）を表示させないようにする.
         `argparse.ArgumentDefaultsHelpFormatter._get_help_string` をオーバライドしている。
@@ -35,9 +35,9 @@ class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaul
         # https://qiita.com/yuji38kwmt/items/c7c4d487e3188afd781e 参照
 
         # 必須な引数には、引数の説明の後ろに"(required)"を付ける
-        help = action.help  # pylint: disable=redefined-builtin
+        help = action.help  # pylint: disable=redefined-builtin  # noqa: A001
         if action.required:
-            help += " (required)"
+            help += " (required)"  # noqa: A001
 
         if "%(default)" not in action.help:
             if action.default is not argparse.SUPPRESS:
@@ -45,7 +45,7 @@ class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaul
                 if action.option_strings or action.nargs in defaulting_nargs:
                     # 以下の条件だけ、annofabcli独自の設定
                     if action.default is not None and not action.const:
-                        help += " (default: %(default)s)"
+                        help += " (default: %(default)s)"  # noqa: A001
         return help
 
 
@@ -107,7 +107,7 @@ def add_parser(
     )
     parser.set_defaults(command_help=parser.print_help)
 
-    # 引数グループに"global optional group"がある場合は、"--help"オプションをデフォルトの"optional"グループから、"global optional arguments"グループに移動する
+    # 引数グループに"global optional group"がある場合は、"--help"オプションをデフォルトの"optional"グループから、"global optional arguments"グループに移動する # noqa: E501
     # https://ja.stackoverflow.com/a/57313/19524
     global_optional_argument_group = first_true(parser._action_groups, pred=lambda e: e.title == GLOBAL_OPTIONAL_ARGUMENTS_TITLE)
     if global_optional_argument_group is not None:
