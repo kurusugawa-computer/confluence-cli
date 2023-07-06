@@ -12,7 +12,8 @@ install:
 
 script:
    - make lint
-   - make test
+   # まだテストコードはないのでコメントアウト
+   #- make test
 branches:
   only:
   - main
