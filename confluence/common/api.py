@@ -18,10 +18,14 @@ class Api:
 
     Args:
         base_url: example: `https://kurusugawa.jp/confluence`
+        delay_second: APIを連続で実行する際、何秒以上間隔を空けるか。Confluenceに負荷をかけすぎないようにするため、少なくとも0.3秒以上にすること。
 
     """
 
     def __init__(self, username: str, password: str, base_url: str, delay_second: int = 1) -> None:
+        if delay_second < 0.3:
+            raise RuntimeError(f"引数'delay_second'は0.3以上にしてください。 :: {delay_second=}")
+
         self.base_url = base_url
         self.session = sessions.BaseUrlSession(base_url=base_url + "/rest/api/")
         self.session.auth = (username, password)

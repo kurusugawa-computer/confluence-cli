@@ -72,5 +72,6 @@ def set_logger(is_debug_mode: bool = False):
 
     if is_debug_mode:
         logging_config["loggers"]["confluence"]["level"] = "DEBUG"
+        logging_config["loggers"]["__main__"]["level"] = "DEBUG"
 
     logging.config.dictConfig(logging_config)

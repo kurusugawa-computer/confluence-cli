@@ -8,9 +8,9 @@ handlers:
     formatter: customFormatter
 loggers:
   __main__:
-    level: DEBUG
+    level: INFO
   confluence:
-    level: DEBUG
+    level: INFO
 root:
   level: INFO
   handlers: [consoleHandler]
