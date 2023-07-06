@@ -1,7 +1,19 @@
 # confluence-cli
 来栖川電算のConfluenceを操作するためのCLIです。
 
-# Reference
+# 認証情報の設定
+
+## 環境変数で指定する
+環境変数 `CONFLUENCE_USER_NAME` , `CONFLUENCE_USER_PASSWORD`に認証情報を設定してください。
+
+## コマンドライン引数で指定する。
+コマンドライン引数 `--confluence_user_name` , `--confluence_user_password`に認証情報を設定してください。
+
+## 標準入力から指定する
+上記の方法で指定がない場合は、標準入力から認証情報を設定することができます。
+
+
+# Command Reference
 ### attachment get
 添付ファイル情報の取得
 
