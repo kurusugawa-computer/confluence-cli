@@ -36,8 +36,9 @@ def main(args: argparse.Namespace) -> None:
 
     is_purged = args.purge
     success_count = 0
+
     all_yes = False
-    for attachment in results:
+    for index, attachment in enumerate(results):
         attachment_id = attachment["id"]
         attachment_title = attachment["title"]
         try:
@@ -50,18 +51,18 @@ def main(args: argparse.Namespace) -> None:
 
                 yes, all_yes = prompt_yesnoall(confirm_message)
             if yes or all_yes:
-                logger.debug(f"id='{attachment_id}', title='{attachment_title}'をゴミ箱に移動します。 ")
+                logger.debug(f"{index+1}件目: id='{attachment_id}', title='{attachment_title}'をゴミ箱に移動します。 ")
                 api.delete_content(attachment_id, query_params={"status": "current"})
                 if is_purged:
-                    logger.debug(f"id='{attachment_id}', title='{attachment_title}'をゴミ箱から完全に削除します。 ")
+                    logger.debug(f"{index+1}件目: id='{attachment_id}', title='{attachment_title}'をゴミ箱から完全に削除します。 ")
                     api.delete_content(attachment_id, query_params={"status": "trashed"})
                 success_count += 1
 
         except Exception:
-            logger.warning(f"id='{attachment_id}', title='{attachment_title}'の削除に失敗しました。", exc_info=True)
+            logger.warning(f"{index+1}件目: id='{attachment_id}', title='{attachment_title}'の削除に失敗しました。", exc_info=True)
             continue
 
-    logger.info(f"{success_count}件の添付ファイルを削除しました。")
+    logger.info(f"{success_count}/{len(results)} 件の添付ファイルを削除しました。")
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):
