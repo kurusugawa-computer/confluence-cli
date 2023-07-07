@@ -30,6 +30,10 @@
 ※添付ファイルをゴミ箱から完全に削除すると、ページを更新できない場合があります。その場合は、一時的に前のバージョンに戻せば、ページを更新できるようになります。
 https://qiita.com/yuji38kwmt/items/c88f039e02b8508926e6
 
+
+### attachment get
+コンテンツ（ページやブログ、添付ファイルなど）の情報を取得します。
+
 ### local convert_html
 HTMLをConfluence用のXMLに変換します。
 Google DocsのページをConfluenceに移行するときなどに利用できます。
