@@ -1,7 +1,6 @@
 import argparse
 import logging
 from pathlib import Path
-from typing import Any
 
 import confluence
 from confluence.common.cli import create_api_instance
@@ -16,9 +15,7 @@ def main(args: argparse.Namespace) -> None:
 
     results = []
     for content_id in content_id_list:
-        result = api.get_content_by_id(
-            content_id, query_params={"status":"any"}
-        )
+        result = api.get_content_by_id(content_id, query_params={"status": "any"})
         results.append(result)
 
     print_json(results, is_pretty=True, output=args.output)
