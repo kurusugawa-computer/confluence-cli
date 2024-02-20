@@ -21,7 +21,7 @@
 		"--init",
 		"--net=host",
 		"--env=CONFLUENCE_USER_NAME",
-		"--env=CONFLUENCE_PASSWORD"
+		"--env=CONFLUENCE_USER_PASSWORD"
 	],
 	"postStartCommand": "poetry install",
 	"customizations": {
