@@ -63,12 +63,21 @@ class Api:
         url = f"content/{content_id}/child/attachment"
         return self._request("get", url, params=query_params).json()
 
-    def create_attachment(self, content_id: str, file: Path, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+    def create_attachment(
+        self, content_id: str, file: Path, *, query_params: Optional[QueryParams] = None, mime_type: Optional[str] = None
+    ) -> dict[str, Any]:
+        """
+        Args:
+            mime_type: mimetypes.guess_type()で自動判定でMIMEタイプを取得できないときに、この値をMIMEタイプにします。
+        """
         headers = {"X-Atlassian-Token": "nocheck"}
         url = f"content/{content_id}/child/attachment"
-        mime_type, _ = mimetypes.guess_type(file)
+        new_mime_type, _ = mimetypes.guess_type(file)
+        if new_mime_type is None:
+            new_mime_type = mime_type
+
         with file.open("rb") as f:
-            files = {"file": (file.name, f, mime_type)}
+            files = {"file": (file.name, f, new_mime_type)}
             return self._request("post", url, params=query_params, files=files, headers=headers).json()
 
     def get_content(self, *, query_params: Optional[QueryParams] = None) -> list[dict[str, Any]]:
