@@ -8,9 +8,9 @@ endif
 .PHONY: format lint test docs publish
 
 format:
-	poetry run black ${SOURCE_FILES}  ${TEST_FILES} --preview
+	poetry run ruff format ${SOURCE_FILES}  ${TEST_FILES}
 	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES} --fix-only --exit-zero
-	
+
 
 
 lint:
@@ -29,9 +29,9 @@ docs:
 	cd docs && poetry run make html
 
 # publish:
-# 	# public PyPIにデプロイ 
+# 	# public PyPIにデプロイ
 # 	poetry publish --build
 # 	# 社内PyPIにデプロイ
 # 	# 事前に`$ poetry config repositories.kci-upload https://kurusugawa.jp/nexus3/repository/KRS-pypi/ `を実行すること
 # 	poetry publish --repository kci-upload --build
-	
+
