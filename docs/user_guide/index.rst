@@ -5,5 +5,6 @@ User Guide
    :maxdepth: 2
 
    basic_usage
-   advanced_usage
+
+
 
