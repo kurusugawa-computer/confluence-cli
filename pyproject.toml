@@ -35,7 +35,7 @@ pytest-cov = "*"
 [tool.poetry.group.linter.dependencies]
 ruff = "^0.2"
 mypy = "^1"
-pylint = "^2"
+pylint = "^3"
 
 types-pytz = "*"
 types-requests = "*"
