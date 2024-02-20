@@ -8,8 +8,9 @@ Command Reference
    :caption: Available Commands
    :titlesonly:
 
-   local/index
    attachment/index
+   content/index
+   local/index
 
 Usage Details
 =================================
@@ -17,5 +18,5 @@ Usage Details
 .. argparse::
    :filename: ../confluence/__main__.py
    :func: create_parser
-   :prog: annoworkcli
+   :prog: confluence
    :nosubcommands:

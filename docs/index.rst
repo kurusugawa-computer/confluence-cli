@@ -8,7 +8,7 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
-   basic_usage/index
+   user_guide/index
    command_reference/index
 
 

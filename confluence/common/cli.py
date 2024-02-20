@@ -43,7 +43,7 @@ class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaul
             if action.default is not argparse.SUPPRESS:
                 defaulting_nargs = [argparse.OPTIONAL, argparse.ZERO_OR_MORE]
                 if action.option_strings or action.nargs in defaulting_nargs:
-                    # 以下の条件だけ、annofabcli独自の設定
+                    # 以下の条件だけ、独自の設定
                     if action.default is not None and not action.const:
                         help += " (default: %(default)s)"  # noqa: A001
         return help
@@ -65,7 +65,7 @@ def add_parser(
         command_name:
         command_help: 1階層上のコマンドヘルプに表示される コマンドの説明（簡易的な説明）
         description: ヘルプ出力に表示される説明（詳細な説明）
-        is_subcommand: サブコマンドかどうか. `annoworkcli job`はコマンド、`annoworkcli job list`はサブコマンドとみなす。
+        is_subcommand: サブコマンドかどうか.
         epilog: ヘルプ出力後に表示される内容。デフォルトはNoneです。
 
     Returns:
