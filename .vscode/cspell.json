@@ -29,6 +29,7 @@
         "popen",
         "pylint",
         "pyquery",
+        "toolbelt",
         "tzlocal",
         "unsubscriptable"
     ]

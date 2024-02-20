@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "kurusugawa-cli"
-copyright = "2020"
-author = "来栖川 芹香"
+project = "confluence-cli"
+copyright = "2024"
+author = "Kurusugawa Computer Inc."
 
 
 # -- General configuration ---------------------------------------------------
@@ -27,8 +27,7 @@ author = "来栖川 芹香"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-# [CUSTOM] docstringをドキュメント化するextension を追加
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.viewcode"]
+extensions = ["sphinxarg.ext"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -45,6 +44,9 @@ language = "ja"
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
+# コードブロックのほとんどがコマンドの説明なので、デフォルトのハイライト言語はpythonからtextに変更する
+# https://www.sphinx-doc.org/ja/master/usage/configuration.html#confval-highlight_language
+highlight_language = "text"
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -58,7 +60,24 @@ html_theme = "pydata_sphinx_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+html_css_files = ["css/custom.css"]
 
 html_theme_options = {
-    "github_url": "https://github.com/kurusugawa-computer/kci-python-devcontainer",
+    "github_url": "https://github.com/kurusugawa-computer/confluence-cli",
+    "footer_items": [],  # footerを空にする
+
+    # icon_links`を指定しないと、pydata-sphinx-theme v0.13.0で
+    # Handler <function update_config at 0x7f0333cb1430> for event 'builder-inited' threw an exception (exception: 'icon_links') というエラーが発生する
+    # https://github.com/pydata/pydata-sphinx-theme/issues/1220
+    "icon_links": [],
+    # Article Contentの領域を増やすため、右側のサイドバーをなくした
+    "secondary_sidebar_items":[],
 }
+
+# html_context = {
+#     "github_user": "kurusugawa-computer",
+#     "github_repo": "confluence-cli",
+#     "github_version": "main",
+#     "doc_path": "docs",
+# }
+

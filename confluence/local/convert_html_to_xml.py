@@ -59,14 +59,13 @@ def convert_img_elm(img_elm: HtmlElement):
         img_elm.attrib["ac:title"] = title_value
 
 
-def convert(input_html_file: Path, output_html_file: Path) -> None:
+def convert(input_html_file: Path, output_xml_file: Path) -> None:
     with input_html_file.open(encoding="utf-8") as f:
         file_content = f.read()
     pq_html = pyquery.PyQuery(file_content)
 
     pq_img = pq_html("img")
 
-    # 画像をすべてアップロードして、img要素のsrc属性値を annofab urlに変更する
     for img_elm in pq_img:
         convert_img_elm(img_elm)
 
@@ -76,12 +75,12 @@ def convert(input_html_file: Path, output_html_file: Path) -> None:
     else:
         html_data = pq_html.html()
 
-    output_html_file.parent.mkdir(exist_ok=True, parents=True)
-    output_html_file.write_text(html_data, encoding="utf-8")
+    output_xml_file.parent.mkdir(exist_ok=True, parents=True)
+    output_xml_file.write_text(html_data, encoding="utf-8")
 
 
 def main(args: argparse.Namespace) -> None:
-    convert(args.input_html, args.output_html)
+    convert(args.input_html, args.output_xml)
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):
@@ -91,9 +90,9 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):
         help="変換元の入力用HTML",
     )
     parser.add_argument(
-        "output_html",
+        "output_xml",
         type=Path,
-        help="変換先の出力用HTML",
+        help="変換先の出力用XML",
     )
 
     parser.set_defaults(subcommand_func=main)
