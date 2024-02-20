@@ -35,7 +35,7 @@ pytest-cov = "*"
 [tool.poetry.group.linter.dependencies]
 ruff = "^0.2"
 mypy = "^1"
-pylint = "^2"
+pylint = "^3"
 
 types-pytz = "*"
 types-requests = "*"
@@ -85,7 +85,7 @@ ignore = [
     "ANN002", # missing-type-args
     "ANN003", # missing-type-kwargs
     "ERA", # : 役立つこともあるが、コメントアウトしていないコードも警告されるので無視する
-
+    "UP007", # non-pep604-annotation :
     # いずれ無視しないようにする
     "ANN201", # missing-return-type-public-function:
     "ANN202", # missing-return-type-private-function:
