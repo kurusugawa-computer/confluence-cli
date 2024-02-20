@@ -24,7 +24,7 @@ Usage Details
 =================================
 
 .. argparse::
-   :ref: confluence.attachment.create_attachement.add_parser
+   :ref: confluence.attachment.create_attachment.add_parser
    :prog: confluence attachment create
    :nosubcommands:
    :nodefaultconst:

@@ -70,6 +70,8 @@ html_theme_options = {
     # Handler <function update_config at 0x7f0333cb1430> for event 'builder-inited' threw an exception (exception: 'icon_links') というエラーが発生する
     # https://github.com/pydata/pydata-sphinx-theme/issues/1220
     "icon_links": [],
+    # Article Contentの領域を増やすため、右側のサイドバーをなくした
+    "secondary_sidebar_items":[],
 }
 
 # html_context = {

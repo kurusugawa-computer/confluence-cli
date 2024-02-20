@@ -57,7 +57,7 @@ Usage Details
 =================================
 
 .. argparse::
-   :ref: confluence.attachment.get_attachement.add_parser
+   :ref: confluence.attachment.get_attachment.add_parser
    :prog: confluence attachment get
    :nosubcommands:
    :nodefaultconst:

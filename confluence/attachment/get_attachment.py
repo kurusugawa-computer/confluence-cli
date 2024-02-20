@@ -30,7 +30,7 @@ def main(args: argparse.Namespace) -> None:
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):
-    parser.add_argument("-c", "--content_id", required=True, help="ファイルのアップロード先であるページのcontent_id")
+    parser.add_argument("-c", "--content_id", required=True, help="取得した添付ファイルが存在するページのcontent_id")
 
     parser.add_argument("--filename", help="filter parameter to return only the Attachment with the matching file name")
     parser.add_argument("--media_type", help="filter parameter to return only Attachments with a matching Media-Type")

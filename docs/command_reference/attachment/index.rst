@@ -1,5 +1,5 @@
 =====================
-account
+attachment
 =====================
 
 Description
@@ -24,6 +24,6 @@ Usage Details
 =================================
 
 .. argparse::
-   :ref: confluence.attachment.subcommand.add_arguments_to_parser
+   :ref: confluence.attachment.subcommand.add_parser
    :prog: confluence attachment
    :nosubcommands:
