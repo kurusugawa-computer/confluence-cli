@@ -22,21 +22,20 @@ Examples
 
     :caption: output.json
 
-    [
-        {
-            "id": "863699179",
-            "type": "page",
-            "status": "current",
-            "title": "test",
-            "space": {
-            "id": 690323457,
-            "key": "parent",
-            "name": "yuji38kwmt",
-            "type": "personal",
-            "_links": {},
-            ...
-        }
-    ]
+    {
+        "id": "863699179",
+        "type": "page",
+        "status": "current",
+        "title": "test",
+        "space": {
+        "id": 690323457,
+        "key": "parent",
+        "name": "yuji38kwmt",
+        "type": "personal",
+        "_links": {},
+        ...
+    }
+
 
 
 

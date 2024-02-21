@@ -11,6 +11,7 @@ from requests_toolbelt import sessions
 logger = logging.getLogger(__name__)
 
 QueryParams = dict[str, Any]
+RequestBody = dict[str, Any]
 
 
 class Api:
@@ -34,7 +35,16 @@ class Api:
         self.delay_second = delay_second
         self._previous_timestamp: float = 0
 
-    def _request(self, http_method: str, url: str, **kwargs) -> Any:  # noqa: ANN401
+    def _request(
+        self,
+        http_method: str,
+        url: str,
+        *,
+        headers: Optional[dict[str, Any]] = None,
+        params: Optional[QueryParams] = None,
+        data: Any = None, # noqa: ANN401
+        **kwargs,
+    ) -> Any:  # noqa: ANN401
         """
         HTTP Requestを投げて、Responseを返す。
 
@@ -43,7 +53,7 @@ class Api:
             url_path:
             query_params:
             header_params:
-            request_body:
+            body:
             log_response_with_error: HTTP Errorが発生したときにレスポンスの中身をログに出力するか否か
 
         Returns:
@@ -56,8 +66,25 @@ class Api:
         if diff_time < self.delay_second:
             time.sleep(self.delay_second - diff_time)
 
-        response = self.session.request(http_method, url, **kwargs)
+        response = self.session.request(http_method, url, params=params, data=data, headers=headers, **kwargs)
         self._previous_timestamp = time.time()
+
+        logger.debug(
+            "Sent a request :: %s",
+            {
+                "requests": {
+                    "http_method": http_method,
+                    "url": url,
+                    "query_params": params,
+                    "request_body_json": data,
+                    "headers": response.request.headers,
+                },
+                "response": {
+                    "status_code": response.status_code,
+                    "content_length": len(response.content),
+                },
+            },
+        )
         response.raise_for_status()
         return response
 
@@ -97,6 +124,17 @@ class Api:
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getContentById
         """
         return self._request("get", f"content/{content_id}", params=query_params).json()
+
+    def update_content(
+        self, content_id: str, *, query_params: Optional[QueryParams] = None, request_body: Optional[RequestBody] = None
+    ) -> dict[str, Any]:
+        """
+        Updates a piece of Content, including changes to content status
+
+        https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-update
+        """
+        headers = {"Content-Type": "application/json", "X-Atlassian-Token": "nocheck"}
+        return self._request("put", f"content/{content_id}", headers=headers, params=query_params, data=request_body).json()
 
     def delete_content(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> None:
         """

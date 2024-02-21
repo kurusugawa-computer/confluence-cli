@@ -11,6 +11,7 @@ Command Reference
    attachment/index
    content/index
    local/index
+   page/index
 
 Usage Details
 =================================
