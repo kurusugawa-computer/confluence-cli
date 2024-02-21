@@ -14,10 +14,10 @@ logger = logging.getLogger(__name__)
 def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     content_id_list = args.content_id
-
+    expand = ",".join(args.expand) if args.expand else None
     results = []
     for content_id in content_id_list:
-        result = api.get_content_by_id(content_id, query_params={"status": "any"})
+        result = api.get_content_by_id(content_id, query_params={"status": "any", "expand": expand})
         results.append(result)
 
     print_json(results, is_pretty=True, output=args.output)
@@ -25,7 +25,7 @@ def main(args: argparse.Namespace) -> None:
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):
     parser.add_argument("-c", "--content_id", required=True, nargs="+", help="取得対象のコンテンツのID")
-
+    parser.add_argument("--expand", nargs="+", help="取得したい情報のプロパティ。指定できる値は出力結果の`_expandable`を参照してください。")
     parser.add_argument("-o", "--output", type=Path, help="出力先")
 
     parser.set_defaults(subcommand_func=main)
