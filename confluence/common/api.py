@@ -42,7 +42,7 @@ class Api:
         *,
         headers: Optional[dict[str, Any]] = None,
         params: Optional[QueryParams] = None,
-        data: Any = None, # noqa: ANN401
+        data: Any = None,  # noqa: ANN401
         **kwargs,
     ) -> Any:  # noqa: ANN401
         """

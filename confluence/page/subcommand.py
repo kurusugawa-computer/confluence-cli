@@ -14,7 +14,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):
     # サブコマンドの定義
     confluence.page.get_page_body.add_parser(subparsers)
     # 動かないので一旦コメントアウトする
-    # confluence.page.update_page.add_parser(subparsers)
+    confluence.page.update_page.add_parser(subparsers)
 
 
 def add_parser(subparsers: Optional[argparse._SubParsersAction] = None) -> argparse.ArgumentParser:

@@ -17,7 +17,7 @@ def main(args: argparse.Namespace) -> None:
     xml_file: Path = args.xml_file
     xml_text = xml_file.read_text(encoding="utf-8")
 
-    old_page = api.get_content_by_id(content_id, query_params={"expand": "version,ancestors,space"})
+    old_page = api.get_content_by_id(content_id, query_params={"expand": "version,ancestors,space,body.storage"})
     print_json(old_page, is_pretty=True, output=None)
     request_body = {
         "version": {"number": old_page["version"]["number"] + 1, "message": ""},
