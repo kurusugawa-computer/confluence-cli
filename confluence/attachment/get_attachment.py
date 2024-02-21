@@ -15,13 +15,14 @@ logger = logging.getLogger(__name__)
 def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     content_id = args.content_id
+    expand = ",".join(args.expand) if args.expand else None
 
     limit = 50
     start = 0
     results: list[dict[str, Any]] = []
     while True:
         result = api.get_attachments(
-            content_id, query_params={"filename": args.filename, "mediaType": args.media_type, "start": start, "limit": limit}
+            content_id, query_params={"filename": args.filename, "mediaType": args.media_type, "start": start, "limit": limit, "expand": expand}
         )
         results.extend(result["results"])
         if result["size"] < limit:
@@ -36,6 +37,8 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):
 
     parser.add_argument("--filename", help="filter parameter to return only the Attachment with the matching file name")
     parser.add_argument("--media_type", help="filter parameter to return only Attachments with a matching Media-Type")
+
+    parser.add_argument("--expand", nargs="+", help="取得したい情報のプロパティ。指定できる値は出力結果の`_expandable`を参照してください。")
 
     parser.add_argument("-o", "--output", type=Path, help="出力先")
 
