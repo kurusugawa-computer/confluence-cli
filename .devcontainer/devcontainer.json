@@ -1,11 +1,11 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.154.0/containers/docker-existing-dockerfile
 {
-	"name": "KCI Python",
+	"name": "Existing Dockerfile",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"context": ".",
-		"target": "devcontainer"
+		"args": {}
 	},
 	"containerUser": "vscode",
 	"remoteUser": "vscode",
@@ -21,20 +21,28 @@
 		"--init",
 		"--net=host",
 		"--env=CONFLUENCE_USER_NAME",
-		"--env=CONFLUENCE_USER_PASSWORD"
+		"--env=CONFLUENCE_USER_PASSWORD",
+		"--env=CONFLUENCE_BASE_URL"
 	],
-	"postStartCommand": "poetry install",
+	"containerEnv": {
+		"CONTAINER_WORKSPACE": "${containerWorkspaceFolder}",
+		"LOCAL_WORKSPACE": "${localWorkspaceFolder}"
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces,type=bind,consistency=cached",
+	"workspaceFolder": "/workspaces",
+	"postStartCommand": ".devcontainer/post-start.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"bungcip.better-toml",
-				"jgclark.vscode-todo-highlight",
-				"lextudio.restructuredtext",
 				"mosapride.zenkaku",
 				"ms-python.python",
 				"ms-python.vscode-pylance",
+				"charliermarsh.ruff",
+				"streetsidesoftware.code-spell-checker",
+				"bungcip.better-toml",
 				"njpwerner.autodocstring",
-				"streetsidesoftware.code-spell-checker"
+				"mechatroner.rainbow-csv",
+				"lextudio.restructuredtext"
 			]
 		}
 	}
