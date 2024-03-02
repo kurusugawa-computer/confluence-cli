@@ -84,10 +84,9 @@ def add_parser(
         group = parent_parser.add_argument_group(GLOBAL_OPTIONAL_ARGUMENTS_TITLE)
         group.add_argument("--debug", action="store_true", help="指定するとデバッグ用のログが出力されます。")
         group.add_argument(
-            "--base_url",
+            "--confluence_base_url",
             type=str,
-            default="https://kurusugawa.jp/confluence",
-            help="アクセスするConfluenceのURL。アクセスするURLは'{base_url}'/rest/api/...'です。",
+            help="アクセスするConfluenceのURL。アクセスするAPIのURLは'{base_url}'/rest/api/...'です。",
         )
         group.add_argument("--confluence_user_name", type=str, help="Confluenceにログインする際のユーザー名")
         group.add_argument("--confluence_user_password", type=str, help="Confluenceにログインする際のパスワード")
@@ -164,39 +163,63 @@ def prompt_yesnoall(msg: str) -> tuple[bool, bool]:
 
 
 def create_api_instance(args: argparse.Namespace) -> Api:
-    base_url = args.base_url
-
     def with_command_line_user_name(confluence_user_name: str) -> Api:
         if args.confluence_user_password is not None:
-            return Api(confluence_user_name, args.confluence_user_password, base_url)
+            return Api(confluence_user_name, args.confluence_user_password, confluence_base_url)
         else:
             # コマンドライン引数にパスワードが指定されなければ、標準入力からパスワードを取得する
-            confluence_user_password = ""
-            while confluence_user_password == "":
-                confluence_user_password = getpass.getpass("Enter Confluence Password: ")
-            return Api(confluence_user_name, confluence_user_password, base_url)
+            confluence_user_password = get_confluence_user_password()
+            return Api(confluence_user_name, confluence_user_password, confluence_base_url)
 
     def with_environ_user_name(confluence_user_name: str) -> Api:
         if "CONFLUENCE_USER_PASSWORD" in os.environ:
-            return Api(confluence_user_name, os.environ["CONFLUENCE_USER_PASSWORD"], base_url)
+            return Api(confluence_user_name, os.environ["CONFLUENCE_USER_PASSWORD"], confluence_base_url)
         else:
             # 環境変数にパスワードが指定されなければ、標準入力からパスワードを取得する
-            confluence_user_password = ""
-            while confluence_user_password == "":
-                confluence_user_password = getpass.getpass("Enter Confluence Password: ")
-            return Api(confluence_user_name, confluence_user_password, base_url)
+            confluence_user_password = get_confluence_user_password()
+            return Api(confluence_user_name, confluence_user_password, confluence_base_url)
 
     def with_stdin_user_name() -> Api:
         # 標準入力から認証情報を取得する
-        confluence_user_name = ""
-        while confluence_user_name == "":
-            confluence_user_name = input("Enter Confluence User Name: ")
+        confluence_user_name = get_confluence_user_name()
+        confluence_user_password = get_confluence_user_password()
 
-        confluence_user_password = ""
-        while confluence_user_password == "":
-            confluence_user_password = getpass.getpass("Enter Confluence Password: ")
+        return Api(confluence_user_name, confluence_user_password, confluence_base_url)
 
-        return Api(confluence_user_name, confluence_user_password, base_url)
+    def get_confluence_user_password() -> str:
+        value = ""
+        while value == "":
+            value = getpass.getpass("Confluenceのパスワードを入力してください。 : ")
+        return value
+
+    def get_confluence_user_name() -> str:
+        value = ""
+        while value == "":
+            value = input("Confluenceのユーザー名を入力してください。 : ")
+        return value
+
+    def get_confluence_base_url_from_stdin() -> str:
+        value = ""
+        while value == "":
+            value = input("ConfluenceのURLを入力してください。(例) `https://kurusugawa.jp/confluence` : ")
+        return value
+
+    def format_url(url: str) -> str:
+        url = url.strip()
+        if url.endswith("/"):
+            url = url[:-1]
+        return url
+
+    confluence_base_url = args.confluence_base_url
+    if confluence_base_url is None:
+        if "CONFLUENCE_BASE_URL" in os.environ:
+            # 環境変数から取得する
+            confluence_base_url = os.environ["CONFLUENCE_BASE_URL"]
+        else:
+            # 標準入力から取得する
+            confluence_base_url = get_confluence_base_url_from_stdin()
+
+    confluence_base_url = format_url(confluence_base_url)
 
     if args.confluence_user_name is not None:
         # コマンドラインから取得する
