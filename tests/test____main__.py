@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import pytest
+
 from confluence.__main__ import main
 from confluence.__version__ import __version__
 
