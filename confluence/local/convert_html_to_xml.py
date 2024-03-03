@@ -13,7 +13,7 @@ import confluence.common.cli
 logger = logging.getLogger(__name__)
 
 
-def convert_img_elm(img_elm: HtmlElement):
+def convert_img_elm(img_elm: HtmlElement) -> None:
     """
     `<img src="foo.png">`を以下のXMLに変換する
 
