@@ -1,6 +1,11 @@
 # confluence-cli
 来栖川電算が利用しているConfluence v6.15.7を操作するためのCLIです。
 
+
+[![Build Status](https://app.travis-ci.com/kurusugawa-computer/confluence-cli.svg?branch=main)](https://app.travis-ci.com/kurusugawa-computer/confluence-cli)
+[![PyPI version](https://badge.fury.io/py/kci-confluence-cli.svg)](https://badge.fury.io/py/kci-confluence-cli)
+[![Python Versions](https://img.shields.io/pypi/pyversions/kci-confluence-cli.svg)](https://pypi.org/project/kci-confluence-cli/)
+
 # Requirements
 Python 3.9+
 
