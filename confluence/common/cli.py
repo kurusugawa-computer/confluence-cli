@@ -88,8 +88,16 @@ def add_parser(
             type=str,
             help="アクセスするConfluenceのURL（たとえば`https://kurusugawa.jp/confluence`）です。アクセスするAPIのURLは'{confluence_base_url}'/rest/api/...'です。未指定の場合は環境変数`CONFLUENCE_BASE_URL`の値を参照します。",
         )
-        group.add_argument("--confluence_user_name", type=str, help="Confluenceにログインする際のユーザー名。未指定の場合は環境変数`CONFLUENCE_USER_NAME`の値を参照します。")
-        group.add_argument("--confluence_user_password", type=str, help="Confluenceにログインする際のパスワード。未指定の場合は環境変数`CONFLUENCE_USER_PASSWORD`の値を参照します。")
+        group.add_argument(
+            "--confluence_user_name",
+            type=str,
+            help="Confluenceにログインする際のユーザー名。未指定の場合は環境変数`CONFLUENCE_USER_NAME`の値を参照します。",
+        )
+        group.add_argument(
+            "--confluence_user_password",
+            type=str,
+            help="Confluenceにログインする際のパスワード。未指定の場合は環境変数`CONFLUENCE_USER_PASSWORD`の値を参照します。",
+        )
 
         return parent_parser
 
