@@ -126,7 +126,12 @@ convention = "google"
 max-args = 10
 
 
+[tool.poetry-dynamic-versioning]
+enable = true
+format = "{base}"
+
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
 build-backend = "poetry_dynamic_versioning.backend"
+
 
