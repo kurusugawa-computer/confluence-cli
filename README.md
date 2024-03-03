@@ -1,18 +1,35 @@
 # confluence-cli
-来栖川電算のConfluenceを操作するためのCLIです。
+来栖川電算が利用しているConfluence v6.15.7を操作するためのCLIです。
 
-いずれpublic repositoryに変更して、PyPIへpublishする予定です。
+# Requirements
+Python 3.9+
 
-# 認証情報の設定
+# Install
 
-## 環境変数で指定する
-環境変数 `CONFLUENCE_USER_NAME` , `CONFLUENCE_USER_PASSWORD`に認証情報を設定してください。
+```
+$ pip install kci-confluence-cli
+```
 
-## コマンドライン引数で指定する。
-コマンドライン引数 `--confluence_user_name` , `--confluence_user_password`に認証情報を設定してください。
+# 使い方
 
-## 標準入力から指定する
-上記の方法で指定がない場合は、標準入力から認証情報を設定することができます。
+## 認証情報の指定
+以下のいずれかの方法で指定できます。
+
+* 環境変数 `CONFLUENCE_USER_NAME` , `CONFLUENCE_USER_PASSWORD` に指定する
+* コマンドライン引数 `--confluence_user_name` , `--confluence_user_password`に指定する
+
+上記の方法で認証情報が指定されない場合は、標準入力から認証情報を入力できます。
+
+
+## ConfluenceのURLの指定
+アクセスするConfluenceのURLを、以下のいずれかの方法で指定できます。
+
+* 環境変数 `CONFLUENCE_BASE_URL`に指定する
+* コマンドライン引数 `--confluence_base_url`に指定する
+
+上記の方法で指定されない場合は、標準入力から入力できます。
+
+来栖川電算のConfluneceにアクセスする場合は、`https://kurusugawa.jp/confluence`を指定してください。
 
 
 # Command Reference

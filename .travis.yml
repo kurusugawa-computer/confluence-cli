@@ -1,8 +1,20 @@
 version: ~> 1.0
 dist: focal
 language: python
+
+
+script:
+  - make test
+
 python:
-  - "3.11"
+  - 3.9
+  - 3.10
+  - 3.11
+    script:
+      - make test
+      # 開発環境と同じバージョンではlintを実行する
+      - make lint
+  - 3.12
 
 install:
   # pipをアップグレードする理由: pipのバージョンが古いと、pillowなど環境ごとにwheelを提供しているライブラリのインストールに失敗する可能性があるため
@@ -11,10 +23,6 @@ install:
   # travis_retryを使う理由: インストール時にtimeoutで失敗しないようにするため
   - travis_retry poetry install
 
-script:
-   - make lint
-   # まだテストコードはないのでコメントアウト
-   #- make test
 branches:
   only:
   - main

@@ -29,7 +29,7 @@ Usage Details
 =================================
 
 .. argparse::
-   :ref: confluence.body.get_page_body.add_parser
-   :prog: confluence body get_body
+   :ref: confluence.page.get_page_body.add_parser
+   :prog: confluence page get_body
    :nosubcommands:
    :nodefaultconst:
