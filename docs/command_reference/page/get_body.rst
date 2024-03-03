@@ -19,9 +19,10 @@ Examples
 
 
 .. code-block::
-
     :caption: output.xml
+
     <p>test</p>
+    <p><ac:image ac:thumbnail="true" ac:height="62"><ri:attachment ri:filename="A.png" /></ac:image></p>
 
 
 

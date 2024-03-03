@@ -46,6 +46,12 @@ Examples
 source editorにXMLを入力する前に、 ``<ri:attachment ri:filename="foo.png" />`` で参照されているファイルを添付ファイルとして作成する必要があります。
 
 
+補足
+=================================
+Google DocsのページをConfluenceに移行するときの手順を、GitHub Wikiに記載しました。
+https://github.com/kurusugawa-computer/confluence-cli/wiki/Google-Docs%E3%82%92Confluence%E3%81%AB%E7%A7%BB%E8%A1%8C%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95
+
+
 
 
 

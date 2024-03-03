@@ -5,6 +5,7 @@
 [![Build Status](https://app.travis-ci.com/kurusugawa-computer/confluence-cli.svg?branch=main)](https://app.travis-ci.com/kurusugawa-computer/confluence-cli)
 [![PyPI version](https://badge.fury.io/py/kci-confluence-cli.svg)](https://badge.fury.io/py/kci-confluence-cli)
 [![Python Versions](https://img.shields.io/pypi/pyversions/kci-confluence-cli.svg)](https://pypi.org/project/kci-confluence-cli/)
+[![Documentation Status](https://readthedocs.org/projects/confluence-cli/badge/?version=latest)](https://confluence-cli.readthedocs.io/ja/latest/?badge=latest)
 
 # Requirements
 Python 3.9+
@@ -38,26 +39,5 @@ $ pip install kci-confluence-cli
 
 
 # Command Reference
-### attachment get
-添付ファイル情報の取得
+https://confluence-cli.readthedocs.io/ja/latest/command_reference/index.html を参照してください。
 
-
-### attachment create
-添付ファイルの作成
-
-
-### attachment delete
-添付ファイルを削除します。
-
-※添付ファイルをゴミ箱から完全に削除すると、ページを更新できない場合があります。その場合は、一時的に前のバージョンに戻せば、ページを更新できるようになります。
-https://qiita.com/yuji38kwmt/items/c88f039e02b8508926e6
-
-
-### attachment get
-コンテンツ（ページやブログ、添付ファイルなど）の情報を取得します。
-
-### local convert_html
-HTMLをConfluence用のXMLに変換します。
-Google DocsのページをConfluenceに移行するときなどに利用できます。
-具体的な手順は以下を参照してください。
-https://github.com/kurusugawa-computer/confluence-cli/wiki/Google-Docs%E3%82%92Confluence%E3%81%AB%E7%A7%BB%E8%A1%8C%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95
