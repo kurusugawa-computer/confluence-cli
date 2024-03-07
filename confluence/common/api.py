@@ -37,7 +37,7 @@ class Api:
         self._previous_timestamp: float = 0
 
     @staticmethod
-    def mask_sensitive_info_of_headers(headers: dict[str, str]|None) -> dict[str, str]|None:
+    def mask_sensitive_info_of_headers(headers: dict[str, str] | None) -> dict[str, str] | None:
         """HTTP headerのセンシティブな情報を`***`でマスクする"""
         if headers is None:
             return None
