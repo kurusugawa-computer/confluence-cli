@@ -27,7 +27,7 @@ more_itertools = "*"
 pyyaml = "*"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7"
+pytest = "^8"
 pytest-xdist = "*"
 pytest-cov = "*"
 
