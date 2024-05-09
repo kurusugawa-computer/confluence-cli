@@ -160,7 +160,7 @@ class Api:
         """
         self._request("delete", f"content/{content_id}", params=query_params)
 
-    def get_content_history(self, content_id: str, *, query_params: Optional[QueryParams] = None):
+    def get_content_history(self, content_id: str, *, query_params: Optional[QueryParams] = None):  # noqa: ANN201
         """Returns the history of a particular piece of content
 
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getHistory

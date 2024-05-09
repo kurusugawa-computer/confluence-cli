@@ -73,12 +73,9 @@ line-length = 150
 [tool.ruff.lint]
 ignore = [
     "G004", # `logging-f-string` : loggingでf-stringを使いたいので無視する
-    "PD901", #すでに`df`という変数をいろんなところで使っているため
-    "PD002", #すでにpandasで`inplace=True`はいろんなところで使っているため
     "RUF001", # 全角記号など`ambiguous unicode character`も使いたいため
     "RUF002",# 全角記号など`ambiguous unicode character`も使いたいため
     "RUF003",# 全角記号など`ambiguous unicode character`も使いたいため
-    "PLC1901", # compare-to-empty-string : `if a == "`のように空文字列で直接比較したいときがあるため
     "PLR2004", # magic-value-comparison: listのサイズで判定するときがよくあるため
     "ANN101", # missing-type-self: 引数selfには型ヒントは付けていないため
     "ANN102", # missing-type-cls: 引数clsには型ヒントは付けていないため
@@ -86,10 +83,6 @@ ignore = [
     "ANN003", # missing-type-kwargs
     "ERA", # : 役立つこともあるが、コメントアウトしていないコードも警告されるので無視する
     "UP007", # non-pep604-annotation :
-    # いずれ無視しないようにする
-    "ANN201", # missing-return-type-public-function:
-    "ANN202", # missing-return-type-private-function:
-    "PLR",  # pylint Refactor
 
     # 以下のルールはコードに合っていないので無効化した
     "RSE", # flake8-raise

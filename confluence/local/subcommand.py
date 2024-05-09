@@ -8,7 +8,7 @@ import confluence.attachment.get_attachment
 import confluence.local.convert_html_to_xml
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     subparsers = parser.add_subparsers(dest="subcommand_name")
 
     # サブコマンドの定義
