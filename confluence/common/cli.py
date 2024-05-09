@@ -22,7 +22,7 @@ class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaul
     def _format_action(self, action: argparse.Action) -> str:
         return super()._format_action(action) + "\n"
 
-    def _get_help_string(self, action):  # noqa: ANN001
+    def _get_help_string(self, action) -> str:  # noqa: ANN001
         """引数説明用のメッセージを生成する。
         不要なデフォルト値（--debug や オプショナルな引数）を表示させないようにする.
         `argparse.ArgumentDefaultsHelpFormatter._get_help_string` をオーバライドしている。
