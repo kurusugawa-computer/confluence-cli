@@ -30,7 +30,7 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(arguments: Optional[Sequence[str]] = None):
+def main(arguments: Optional[Sequence[str]] = None):  # noqa: ANN201
     parser = create_parser()
     if arguments is None:
         args = parser.parse_args()

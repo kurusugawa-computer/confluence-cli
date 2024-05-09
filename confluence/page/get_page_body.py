@@ -32,7 +32,7 @@ def main(args: argparse.Namespace) -> None:
     output_string(result["body"][representation]["value"], output=args.output)
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument("-c", "--content_id", required=True, help="取得対象のコンテンツのID")
     parser.add_argument(
         "--representation", choices=[e.value for e in BodyRepresentation], default=BodyRepresentation.STORAGE.value, help="ページの中身の表現方法"

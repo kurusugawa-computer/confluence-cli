@@ -8,7 +8,7 @@ import confluence.page.get_page_body
 import confluence.page.update_page
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     subparsers = parser.add_subparsers(dest="subcommand_name")
 
     # サブコマンドの定義

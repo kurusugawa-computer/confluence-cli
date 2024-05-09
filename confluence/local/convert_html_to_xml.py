@@ -85,7 +85,7 @@ def main(args: argparse.Namespace) -> None:
     convert(args.input_html, args.output_xml)
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument(
         "input_html",
         type=Path,

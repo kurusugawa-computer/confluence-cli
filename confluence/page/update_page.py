@@ -30,7 +30,7 @@ def main(args: argparse.Namespace) -> None:
     print_json(result, is_pretty=True, output=None)
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument("-c", "--content_id", required=True, help="取得対象のコンテンツのID")
     parser.add_argument(
         "--xml_file", required=True, type=Path, help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でページが更新されます。"

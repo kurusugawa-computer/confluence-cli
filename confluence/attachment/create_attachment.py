@@ -78,7 +78,7 @@ def main(args: argparse.Namespace) -> None:
         create_attachments_from_directory(api, content_id, query_params, args.dir, filename_pattern=args.filename_pattern, mime_type=args.mime_type)
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument("-c", "--content_id", required=True, help="ファイルのアップロード先であるページのcontent_id")
 
     file_group = parser.add_mutually_exclusive_group(required=True)

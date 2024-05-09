@@ -19,7 +19,7 @@ def main(args: argparse.Namespace) -> None:
     print_json(result, is_pretty=True, output=args.output)
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument("-c", "--content_id", required=True, help="取得対象のコンテンツのID")
     parser.add_argument("--expand", nargs="+", help="取得したい情報のプロパティ。指定できる値は出力結果の`_expandable`を参照してください。")
     parser.add_argument("-o", "--output", type=Path, help="出力先")

@@ -32,7 +32,7 @@ def main(args: argparse.Namespace) -> None:
     print_json(results, is_pretty=True, output=args.output)
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):
+def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument("-c", "--content_id", required=True, help="取得した添付ファイルが存在するページのcontent_id")
 
     parser.add_argument("--filename", help="filter parameter to return only the Attachment with the matching file name")
