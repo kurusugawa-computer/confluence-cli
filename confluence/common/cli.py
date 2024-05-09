@@ -1,6 +1,7 @@
 """
 Command Line Interfaceの共通部分
 """
+
 from __future__ import annotations
 
 import argparse
