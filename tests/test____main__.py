@@ -6,7 +6,7 @@ from confluence.__main__ import main
 from confluence.__version__ import __version__
 
 
-def test__command__version_option(capsys):  # noqa: ANN201
+def test__command__version_option(capsys):
     with pytest.raises(SystemExit):
         main(
             [
