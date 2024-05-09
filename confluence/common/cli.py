@@ -210,7 +210,7 @@ def create_api_instance(args: argparse.Namespace) -> Api:
     def get_confluence_base_url_from_stdin() -> str:
         value = ""
         while value == "":
-            value = input("ConfluenceのURLを入力してください。(例) `https://kurusugawa.jp/confluence` : ")
+            value = input("ConfluenceのURLを入力してください。(例) https://kurusugawa.jp/confluence : ")
         return value
 
     def format_url(url: str) -> str:

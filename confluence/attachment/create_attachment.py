@@ -17,8 +17,7 @@ def create_attachments_from_file_list(
 ) -> None:
     logger.info(f"{len(files)}件のファイルをアップロードします。")
     success_count = 0
-    total_count = 0
-    for file in files:
+    for index, file in enumerate(files):
         if not file.is_file():
             logger.warning(f"'{file}'はファイルでないので、アップロードしません。")
             continue
@@ -27,9 +26,11 @@ def create_attachments_from_file_list(
             continue
 
         try:
-            total_count += 1
             api.create_attachment(content_id, file, query_params=query_params, mime_type=mime_type)
-            logger.debug(f"{total_count+1}件目: '{file}'をアップロードしました。")
+            logger.debug(f"{index+1}件目: '{file}'をアップロードしました。")
+            if (index + 1) % 10 == 0:
+                logger.info(f"{index+1}件目のファイルのアップロードが完了しました。")
+
         except Exception:
             logger.warning(f"'{file}'のアップロードに失敗しました。", exc_info=True)
             continue
@@ -37,35 +38,40 @@ def create_attachments_from_file_list(
         logger.debug(f"'{file}'をアップロードしました。")
         success_count += 1
 
-    logger.info(f"{success_count}/{total_count} 件のファイルをアップロードしました。")
+    logger.info(f"{success_count}/{len(files)} 件のファイルをアップロードしました。")
 
 
 def create_attachments_from_directory(
     api: Api, content_id: str, query_params: dict[str, Any], directory: Path, filename_pattern: None | str, mime_type: None | str
 ) -> None:
     success_count = 0
-    total_count = 0
     if not directory.is_dir():
         logger.error(f"'{directory}'はディレクトリでないので、終了します。")
         return
 
-    logger.info(f"ディレクトリ'{directory}'内のファイルをアップロードします。")
-
+    files = []
     for file in directory.iterdir():
         if not file.is_file():
             continue
         if filename_pattern is not None and not file.glob(filename_pattern):
             continue
+        files.append(file)
+
+    logger.info(f"ディレクトリ'{directory}'内のファイル{len(files)}件をアップロードします。")
+
+    for index, file in enumerate(files):
         try:
-            total_count += 1
             api.create_attachment(content_id, file, query_params=query_params, mime_type=mime_type)
-            logger.debug(f"{total_count}件目: '{file}'をアップロードしました。")
+            logger.debug(f"{index+1}件目: '{file}'をアップロードしました。")
+            if (index + 1) % 10 == 0:
+                logger.info(f"{index+1}件目のファイルのアップロードが完了しました。")
+
         except Exception:
             logger.warning(f"'{file}'のアップロードに失敗しました。", exc_info=True)
             continue
         success_count += 1
 
-    logger.info(f"{success_count}/{total_count}件のファイルをアップロードしました。")
+    logger.info(f"{success_count}/{len(files)}件のファイルをアップロードしました。")
 
 
 def main(args: argparse.Namespace) -> None:
@@ -87,7 +93,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
 
     parser.add_argument("--mime_type", type=str, help="ファイル名からMIMEタイプが判別できないときに、この値を添付ファイルのMIMEタイプとします。")
 
-    parser.add_argument("--allow_duplicated", action="store_true", help="指定した場合は、すでに同じファイルが存在しても上書きします。")
+    parser.add_argument("--allow_duplicated", action="store_true", help="指定した場合は、アップロード先にすでに同じファイルが存在している場合に上書きます。指定しない場合は、400 Errorが発生します。")
 
     parser.add_argument("--filename_pattern", help="glob形式のパターンに一致するファイル名だけアップロードします。(ex) '*.png'")
     parser.set_defaults(subcommand_func=main)
