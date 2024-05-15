@@ -93,7 +93,11 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
 
     parser.add_argument("--mime_type", type=str, help="ファイル名からMIMEタイプが判別できないときに、この値を添付ファイルのMIMEタイプとします。")
 
-    parser.add_argument("--allow_duplicated", action="store_true", help="指定した場合は、アップロード先にすでに同じファイルが存在している場合に上書きます。指定しない場合は、400 Errorが発生します。")
+    parser.add_argument(
+        "--allow_duplicated",
+        action="store_true",
+        help="指定した場合は、アップロード先にすでに同じファイルが存在している場合に上書きます。指定しない場合は、400 Errorが発生します。",
+    )
 
     parser.add_argument("--filename_pattern", help="glob形式のパターンに一致するファイル名だけアップロードします。(ex) '*.png'")
     parser.set_defaults(subcommand_func=main)

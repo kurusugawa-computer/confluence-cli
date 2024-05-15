@@ -18,14 +18,9 @@ def convert_img_elm(img_elm: HtmlElement) -> None:
     `<img src="foo.png">`を以下のXMLに変換する
 
     ```
-    <ac:image ac:alt="aaaa" ac:border="true" ac:height="207" ac:title="aaaa" ac:width="240">
-    <ri:attachment ri:filename="image2023-2-16_11-24-17.png"/>
+    <ac:image>
+    <ri:attachment ri:filename="foo.png"/>
     </ac:image>
-    ```
-
-
-    ```
-    <ac:image><ri:url ri:value="http://confluence.atlassian.com/images/logo/confluence_48_trans.png" /></ac:image>
     ```
 
     Args:
@@ -39,6 +34,10 @@ def convert_img_elm(img_elm: HtmlElement) -> None:
         url_elm.tag = "ri:url"
         url_elm.attrib["ri:value"] = src_value
         img_elm.append(url_elm)
+    elif src_value.startswith("data:"):
+        # Data URIには対応していないので、スキップする
+        logger.warning(f"img要素のsrc属性値はData URIが含まれていました。Confluence用のXMLはData URIに対応していません。 :: {img_elm}'")
+        return
     else:
         attachment_elm = fromstring("<ri:attachment/>")
         # コロン付きのタグが生成できないので、改めて置換した
@@ -49,16 +48,20 @@ def convert_img_elm(img_elm: HtmlElement) -> None:
         attachment_elm.attrib["ri:filename"] = tmp[-1]
 
         img_elm.append(attachment_elm)
+    del img_elm.attrib["src"]
 
+    # img要素のいくつかの属性を、`ac:image`タグの属性に変換する。
+    # https://ja.confluence.atlassian.com/doc/confluence-storage-format-790796544.html
+    # bool値を指定する以下の属性は変換しない
+    # ac:border, ac:thumbnail
+    for html_attribute_name in ("align", "class", "title", "style", "alt", "height", "width", "vspace", "hspace"):
+        attribute_value = img_elm.attrib.get(html_attribute_name)
+        if attribute_value is not None and attribute_value != "":
+            img_elm.attrib[f"ac:{html_attribute_name}"] = attribute_value
+            del img_elm.attrib[html_attribute_name]
+
+    # サムネイル画像として設定する（画像をクリックすると拡大表示される）
     img_elm.attrib["ac:thumbnail"] = "true"
-
-    alt_value: str = img_elm.attrib.get("alt")
-    if alt_value != "":
-        img_elm.attrib["ac:alt"] = alt_value
-
-    title_value: str = img_elm.attrib.get("title")
-    if title_value != "":
-        img_elm.attrib["ac:title"] = title_value
 
 
 def convert(input_html_file: Path, output_xml_file: Path) -> None:
@@ -73,9 +76,11 @@ def convert(input_html_file: Path, output_xml_file: Path) -> None:
 
     # body要素があればその中身、なければhtmlファイルの中身をアップロードする
     if len(pq_html("body")) > 0:
+        # body要素以下のHTMLを取得する
         html_data = pq_html("body").html()
     else:
-        html_data = pq_html.html()
+        # 要素自身のHTMLを取得する
+        html_data = str(pq_html)
 
     output_xml_file.parent.mkdir(exist_ok=True, parents=True)
     output_xml_file.write_text(html_data, encoding="utf-8")
