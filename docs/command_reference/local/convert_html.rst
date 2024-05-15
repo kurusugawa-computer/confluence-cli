@@ -18,30 +18,28 @@ Examples
     $ confluence local convert_html input.html output.xml
 
 
-.. code-block::
-
-    :caption: input.xml
+.. code-block:: html
+    :caption: input.html
 
     <html>
     <body>
-    <img alt="" src="foo.png" title="foo-title" alt="foo-alt">
-    <img alt="" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
+    <img src="foo.png" title="foo-title" alt="foo-alt">
+    <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
     </body>
     </html>
 
 
-.. code-block::
+.. code-block:: xml
     :caption: output.xml
 
 
-    <ac:image alt="" src="foo.png" title="foo-title" ac:thumbnail="true" ac:title="foo-title">
-        <ri:attachment ri:filename="foo.png" />
+    <ac:image ac:title="foo-title" ac:alt="foo-alt" ac:thumbnail="true">
+        <ri:attachment ri:filename="foo.png"/>
     </ac:image>
-    <ac:image alt="" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-        ac:thumbnail="true" ac:title="">
-        <ri:url ri:value="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" />
+    <ac:image ac:thumbnail="true">
+        <ri:url ri:value="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
     </ac:image>
-
+    
 
 source editorにXMLを入力する前に、 ``<ri:attachment ri:filename="foo.png" />`` で参照されているファイルを添付ファイルとして作成する必要があります。
 
@@ -53,6 +51,27 @@ https://github.com/kurusugawa-computer/confluence-cli/wiki/Google-Docs%E3%82%92C
 
 
 
+img要素の変換
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``img`` 要素の ``src`` 属性に指定されているディレクトリは無視されます。
+
+.. code-block:: html
+    :caption: 変換前のHTML
+
+    <img src="images/bar.png">
+
+
+.. code-block:: html
+    :caption: 変換後のXML
+
+    <ac:image ac:thumbnail="true" >
+    <ri:attachment ri:filename="bar.png"/>
+    </ac:image>
+
+
+Data URLが含まれた画像（Base64形式）は、Confluence用のXMLには対応していません。
+別の手段で、直接画像を参照する形式に変換してから、 ``local convert_html`` を実行してください。
 
 
 
