@@ -34,6 +34,10 @@ def convert_img_elm(img_elm: HtmlElement) -> None:
         url_elm.tag = "ri:url"
         url_elm.attrib["ri:value"] = src_value
         img_elm.append(url_elm)
+    elif src_value.startswith("data:"):
+        # Data URIには対応していないので、スキップする
+        logger.warning(f"img要素のsrc属性値はData URIが含まれていました。Confluence用のXMLはData URIに対応していません。 :: {img_elm}'")
+        return
     else:
         attachment_elm = fromstring("<ri:attachment/>")
         # コロン付きのタグが生成できないので、改めて置換した
