@@ -44,16 +44,21 @@ def convert_img_elm(img_elm: HtmlElement) -> None:
         attachment_elm.attrib["ri:filename"] = tmp[-1]
 
         img_elm.append(attachment_elm)
+    del img_elm.attrib["src"]
 
+    # img要素のいくつかの属性を、`ac:image`タグの属性に変換する。
+    # https://ja.confluence.atlassian.com/doc/confluence-storage-format-790796544.html
+    # bool値を指定する以下の属性は変換しない
+    # ac:border, ac:thumbnail
+    for html_attribute_name in ("align", "class", "title", "style", "alt", "height", "width", "vspace", "hspace"):
+        attribute_value = img_elm.attrib.get(html_attribute_name)
+        print(html_attribute_name, attribute_value)
+        if attribute_value is not None and attribute_value != "":
+            img_elm.attrib[f"ac:{html_attribute_name}"] = attribute_value
+            del img_elm.attrib[html_attribute_name]
+
+    # サムネイル画像として設定する（画像をクリックすると拡大表示される）
     img_elm.attrib["ac:thumbnail"] = "true"
-
-    alt_value: str = img_elm.attrib.get("alt")
-    if alt_value != "":
-        img_elm.attrib["ac:alt"] = alt_value
-
-    title_value: str = img_elm.attrib.get("title")
-    if title_value != "":
-        img_elm.attrib["ac:title"] = title_value
 
 
 def convert(input_html_file: Path, output_xml_file: Path) -> None:
