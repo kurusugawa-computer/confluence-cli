@@ -52,7 +52,6 @@ def convert_img_elm(img_elm: HtmlElement) -> None:
     # ac:border, ac:thumbnail
     for html_attribute_name in ("align", "class", "title", "style", "alt", "height", "width", "vspace", "hspace"):
         attribute_value = img_elm.attrib.get(html_attribute_name)
-        print(html_attribute_name, attribute_value)
         if attribute_value is not None and attribute_value != "":
             img_elm.attrib[f"ac:{html_attribute_name}"] = attribute_value
             del img_elm.attrib[html_attribute_name]
