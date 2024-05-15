@@ -40,6 +40,7 @@ def main(args: argparse.Namespace) -> None:
     success_count = 0
 
     all_yes = False
+    yes = False
     for index, attachment in enumerate(results):
         attachment_id = attachment["id"]
         attachment_title = attachment["title"]
