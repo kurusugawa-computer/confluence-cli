@@ -1,5 +1,5 @@
 ======================================
-attachment get
+attachment delete
 ======================================
 
 Description
