@@ -6,7 +6,6 @@ from pathlib import Path
 
 import confluence
 from confluence.common.cli import create_api_instance
-from confluence.common.utils import print_json
 
 logger = logging.getLogger(__name__)
 
@@ -18,16 +17,19 @@ def main(args: argparse.Namespace) -> None:
     xml_text = xml_file.read_text(encoding="utf-8")
 
     old_page = api.get_content_by_id(content_id, query_params={"expand": "version,ancestors,space,body.storage"})
-    print_json(old_page, is_pretty=True, output=None)
+
+    page_title = old_page["title"]
+    space_key = old_page["space"]["key"]
+    logger.info(f"次のコンテンツを更新します。 :: content_id='{content_id}', title='{page_title}, space.key='{space_key}'")
     request_body = {
         "version": {"number": old_page["version"]["number"] + 1, "message": ""},
-        "title": old_page["title"],
+        "title": page_title,
         "type": old_page["type"],
-        "space": {"key": old_page["space"]["key"]},
+        "space": {"key": space_key},
         "body": {"storage": {"value": xml_text, "representation": "storage"}},
     }
-    result = api.update_content(content_id, request_body=request_body)
-    print_json(result, is_pretty=True, output=None)
+    _ = api.update_content(content_id, request_body=request_body)
+    logger.info(f"次のコンテンツを'{xml_file}'の内容で更新しました。 :: content_id='{content_id}', title='{page_title}, space.key='{space_key}'")
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
