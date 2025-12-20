@@ -36,7 +36,10 @@ def main(args: argparse.Namespace) -> None:
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument("-c", "--content_id", required=True, help="更新対象のコンテンツのID")
     parser.add_argument(
-        "--xml_file", required=True, type=Path, help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でコンテンツが更新されます。"
+        "--xml_file",
+        required=True,
+        type=Path,
+        help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でコンテンツが更新されます。",
     )
     parser.add_argument("--comment", help="コンテンツを更新したときに残すコメント。")
 

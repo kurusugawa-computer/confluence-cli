@@ -146,8 +146,7 @@ class Api:
 
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-update
         """
-        headers = {"Content-Type": "application/json", "X-Atlassian-Token": "nocheck"}
-        return self._request("put", f"content/{content_id}", headers=headers, params=query_params, json=request_body).json()
+        return self._request("put", f"content/{content_id}", params=query_params, json=request_body).json()
 
     def delete_content(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> None:
         """
