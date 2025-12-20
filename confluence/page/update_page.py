@@ -14,6 +14,7 @@ def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     content_id = args.content_id
     xml_file: Path = args.xml_file
+    comment = args.comment if args.comment is not None else "Updated via confluence-cli"
     xml_text = xml_file.read_text(encoding="utf-8")
 
     old_page = api.get_content_by_id(content_id, query_params={"expand": "version,ancestors,space,body.storage"})
@@ -22,7 +23,7 @@ def main(args: argparse.Namespace) -> None:
     space_key = old_page["space"]["key"]
     logger.info(f"次のコンテンツを更新します。 :: content_id='{content_id}', title='{page_title}, space.key='{space_key}'")
     request_body = {
-        "version": {"number": old_page["version"]["number"] + 1, "message": ""},
+        "version": {"number": old_page["version"]["number"] + 1, "message": comment},
         "title": page_title,
         "type": old_page["type"],
         "space": {"key": space_key},
@@ -37,6 +38,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     parser.add_argument(
         "--xml_file", required=True, type=Path, help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でページが更新されます。"
     )
+    parser.add_argument("--comment", help="コンテンツを更新したときに残すコメント。")
 
     parser.set_defaults(subcommand_func=main)
 
