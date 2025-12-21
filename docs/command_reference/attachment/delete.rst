@@ -15,14 +15,14 @@ Examples
 
 .. code-block::
 
-    $ confluence attachment delete --content_id ${CONTENT_ID}
+    $ confluence attachment delete --parent_content_id ${CONTENT_ID}
 
 
 ``--purge`` を指定すると、ゴミ箱からも削除します。
 
 .. code-block::
 
-    $ confluence attachment delete --content_id ${CONTENT_ID} --purge
+    $ confluence attachment delete --parent_content_id ${CONTENT_ID} --purge
 
 
 
