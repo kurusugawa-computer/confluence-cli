@@ -1,6 +1,8 @@
 confluence-cli documentation
 ==================================================
 
+confluence-cliは、Confluence v6.15.7を操作するためのコマンドラインツールです。
+
 --------------------------------------------------
 Table of Contents
 --------------------------------------------------
@@ -8,6 +10,7 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
+   user_guide/index
    command_reference/index
 
 
