@@ -48,7 +48,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
         help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でコンテンツが更新されます。",
     )
     parser.add_argument("--comment", help="コンテンツを更新したときに残すコメント。")
-    parser.add_argument("-y", "--yes", action="store_true", help="確認なしでコンテンツを更新します。")
+    parser.add_argument("--yes", action="store_true", help="すべてのプロンプトに自動的に'yes'と答え、非対話的に実行します。")
 
     parser.set_defaults(subcommand_func=main)
 
