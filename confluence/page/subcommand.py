@@ -5,6 +5,7 @@ from typing import Optional
 
 import confluence
 import confluence.page.get_page_body
+import confluence.page.update_page
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
@@ -12,11 +13,12 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
 
     # サブコマンドの定義
     confluence.page.get_page_body.add_parser(subparsers)
+    confluence.page.update_page.add_parser(subparsers)
 
 
 def add_parser(subparsers: Optional[argparse._SubParsersAction] = None) -> argparse.ArgumentParser:
     subcommand_name = "page"
-    subcommand_help = "ページに関するサブコマンド"
+    subcommand_help = "ページまたはブログに関するサブコマンド"
 
     parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help, description=subcommand_help, is_subcommand=False)
     add_arguments_to_parser(parser)
