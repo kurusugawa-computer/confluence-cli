@@ -4,18 +4,18 @@ body get_body
 
 Description
 =================================
-ページの内容を取得します。
+ページまたはブログの内容を取得します。
 
 
 
 Examples
 =================================
 
-以下のコマンドは、 ``${CONTENT_ID}`` のページのstorageフォーマットを出力します。
+以下のコマンドは、 ``${CONTENT_ID}`` のページの `storageフォーマット <https://ja.confluence.atlassian.com/doc/confluence-storage-format-790796544.html>`_ を出力します。
 
 .. code-block::
 
-    $ confluence body get_body --content_id ${CONTENT_ID} > output.xml
+    $ confluence page get_body --content_id ${CONTENT_ID} > output.xml
 
 
 .. code-block::

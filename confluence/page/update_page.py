@@ -19,7 +19,7 @@ def main(args: argparse.Namespace) -> None:
 
     old_content = api.get_content_by_id(content_id, query_params={"expand": "version,ancestors,space,body.storage"})
 
-    content_title = old_content["title"]
+    content_title = args.title if args.title is not None else old_content["title"]
     space_key = old_content["space"]["key"]
     if not args.yes:
         if not prompt_yesno(f"次のコンテンツを更新しますか？ :: content_id='{content_id}', title='{content_title}', space.key='{space_key}'"):
@@ -36,7 +36,7 @@ def main(args: argparse.Namespace) -> None:
     logger.info(f"次のコンテンツを'{xml_file}'の内容で更新しました。 :: content_id='{content_id}', title='{content_title}', space.key='{space_key}'")
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
+def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("-c", "--content_id", required=True, help="更新対象のコンテンツのID")
     parser.add_argument(
         "--xml_file",
@@ -44,6 +44,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
         type=Path,
         help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でコンテンツが更新されます。",
     )
+    parser.add_argument("--title", help="コンテンツの新しいタイトル。指定しない場合は既存のタイトルが維持されます。")
     parser.add_argument("--comment", help="コンテンツを更新したときに残すコメント。")
     parser.add_argument("--yes", action="store_true", help="すべてのプロンプトに自動的に'yes'と答え、非対話的に実行します。")
 
@@ -52,7 +53,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
 
 def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse.ArgumentParser:
     subcommand_name = "update"
-    subcommand_help = "コンテンツを更新します。"
+    subcommand_help = "ページまたはブログを更新します。"
 
     parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
 
