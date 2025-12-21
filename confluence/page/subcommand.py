@@ -5,16 +5,13 @@ from typing import Optional
 
 import confluence
 import confluence.page.get_page_body
-import confluence.page.update_page
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
+def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
     subparsers = parser.add_subparsers(dest="subcommand_name")
 
     # サブコマンドの定義
     confluence.page.get_page_body.add_parser(subparsers)
-    # 動かないのでコメントアウトする
-    # confluence.page.update_page.add_parser(subparsers)
 
 
 def add_parser(subparsers: Optional[argparse._SubParsersAction] = None) -> argparse.ArgumentParser:

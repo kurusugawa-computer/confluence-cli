@@ -5,6 +5,7 @@ from typing import Optional
 
 import confluence
 import confluence.content.get_content_by_id
+import confluence.content.update_content
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
@@ -12,6 +13,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
 
     # サブコマンドの定義
     confluence.content.get_content_by_id.add_parser(subparsers)
+    confluence.content.update_content.add_parser(subparsers)
 
 
 def add_parser(subparsers: Optional[argparse._SubParsersAction] = None) -> argparse.ArgumentParser:

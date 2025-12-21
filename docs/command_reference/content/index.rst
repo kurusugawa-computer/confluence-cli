@@ -17,6 +17,7 @@ Available Commands
    :titlesonly:
 
    get_by_id
+   update
 
 
 Usage Details
