@@ -21,18 +21,15 @@ def main(args: argparse.Namespace) -> None:
 
     content_title = old_content["title"]
     space_key = old_content["space"]["key"]
-    logger.info(f"次のコンテンツを更新します。 :: content_id='{content_id}', title='{content_title}', space.key='{space_key}'")
-
     if not args.yes:
-        if not prompt_yesno("コンテンツを更新しますか?"):
-            logger.info("コンテンツの更新をキャンセルしました。")
+        if not prompt_yesno(f"次のコンテンツを更新しますか？ :: content_id='{content_id}', title='{content_title}', space.key='{space_key}'"):
+            logger.info(f"コンテンツの更新をキャンセルしました。 content_id='{content_id}', title='{content_title}', space.key='{space_key}'")
             return
 
     request_body = {
         "version": {"number": old_content["version"]["number"] + 1, "message": comment},
         "title": content_title,
         "type": old_content["type"],
-        "space": {"key": space_key},
         "body": {"storage": {"value": xml_text, "representation": "storage"}},
     }
     _ = api.update_content(content_id, request_body=request_body)
