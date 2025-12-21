@@ -22,7 +22,7 @@ def main(args: argparse.Namespace) -> None:
     content_title = old_content["title"]
     space_key = old_content["space"]["key"]
     logger.info(f"次のコンテンツを更新します。 :: content_id='{content_id}', title='{content_title}', space.key='{space_key}'")
-    
+
     if not args.yes:
         if not prompt_yesno("コンテンツを更新しますか?"):
             logger.info("コンテンツの更新をキャンセルしました。")
