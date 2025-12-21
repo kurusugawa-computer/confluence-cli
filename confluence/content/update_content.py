@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 
 import confluence
-from confluence.common.cli import create_api_instance
+from confluence.common.cli import create_api_instance, prompt_yesno
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +22,12 @@ def main(args: argparse.Namespace) -> None:
     content_title = old_content["title"]
     space_key = old_content["space"]["key"]
     logger.info(f"次のコンテンツを更新します。 :: content_id='{content_id}', title='{content_title}', space.key='{space_key}'")
+    
+    if not args.yes:
+        if not prompt_yesno("コンテンツを更新しますか?"):
+            logger.info("コンテンツの更新をキャンセルしました。")
+            return
+
     request_body = {
         "version": {"number": old_content["version"]["number"] + 1, "message": comment},
         "title": content_title,
@@ -42,6 +48,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
         help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でコンテンツが更新されます。",
     )
     parser.add_argument("--comment", help="コンテンツを更新したときに残すコメント。")
+    parser.add_argument("-y", "--yes", action="store_true", help="確認なしでコンテンツを更新します。")
 
     parser.set_defaults(subcommand_func=main)
 
