@@ -42,10 +42,10 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
         "--xml_file",
         required=True,
         type=Path,
-        help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でコンテンツが更新されます。",
+        help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でページ（またはブログ）が更新されます。",
     )
-    parser.add_argument("--title", help="コンテンツの新しいタイトル。指定しない場合は既存のタイトルが維持されます。")
-    parser.add_argument("--comment", help="コンテンツを更新したときに残すコメント。")
+    parser.add_argument("--title", help="ページまたはブログの新しいタイトル。指定しない場合は既存のタイトルが維持されます。")
+    parser.add_argument("--comment", help="ページまたはブログを更新したときに残すコメント。")
     parser.add_argument("--yes", action="store_true", help="すべてのプロンプトに自動的に'yes'と答え、非対話的に実行します。")
 
     parser.set_defaults(subcommand_func=main)
