@@ -25,6 +25,7 @@ pyquery = "^2"
 requests-toolbelt = "^1"
 more_itertools = "*"
 pyyaml = "*"
+lxml = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7"
