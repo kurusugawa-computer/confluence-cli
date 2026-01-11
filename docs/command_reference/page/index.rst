@@ -17,6 +17,7 @@ Available Commands
    :titlesonly:
 
    get_body
+   update
 
 
 Usage Details
