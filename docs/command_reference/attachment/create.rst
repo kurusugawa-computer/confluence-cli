@@ -15,7 +15,7 @@ Examples
 
 .. code-block::
 
-    $ confluence attachment create --content_id ${CONTENT_ID} --dir dir/
+    $ confluence attachment create --page_id ${PAGE_ID} --dir dir/
 
 
 
@@ -23,7 +23,7 @@ Examples
 
 .. code-block::
 
-    $ confluence attachment create --content_id ${CONTENT_ID} \
+    $ confluence attachment create --page_id ${PAGE_ID} \
      --file file1.txt file2.txt --allow_duplicated
 
 

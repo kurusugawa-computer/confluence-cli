@@ -25,15 +25,15 @@ def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     representation = args.representation
     expand = f"body.{representation}"
-    content_id = args.content_id
+    page_id = args.page_id
 
-    result = api.get_content_by_id(content_id, query_params={"expand": expand})
+    result = api.get_content_by_id(page_id, query_params={"expand": expand})
 
     output_string(result["body"][representation]["value"], output=args.output)
 
 
-def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
-    parser.add_argument("-c", "--content_id", required=True, help="取得対象のコンテンツのID")
+def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("-p", "--page_id", required=True, help="取得対象のページまたはブログのID")
     parser.add_argument(
         "--representation", choices=[e.value for e in BodyRepresentation], default=BodyRepresentation.STORAGE.value, help="ページの中身の表現方法"
     )
@@ -44,7 +44,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
 
 def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse.ArgumentParser:
     subcommand_name = "get_body"
-    subcommand_help = "ページの中身を取得します。"
+    subcommand_help = "ページまたはブログの中身を取得します。"
 
     parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
 

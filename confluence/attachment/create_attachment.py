@@ -76,7 +76,7 @@ def create_attachments_from_directory(
 
 def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
-    content_id = args.content_id
+    content_id = args.page_id
     query_params = {"allowDuplicated": args.allow_duplicated}
     if args.file is not None:
         create_attachments_from_file_list(api, content_id, query_params, args.file, filename_pattern=args.filename_pattern, mime_type=args.mime_type)
@@ -85,7 +85,7 @@ def main(args: argparse.Namespace) -> None:
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
-    parser.add_argument("-c", "--content_id", required=True, help="ファイルのアップロード先であるページのcontent_id")
+    parser.add_argument("-p", "--page_id", required=True, help="ファイルのアップロード先であるページまたはブログのID")
 
     file_group = parser.add_mutually_exclusive_group(required=True)
     file_group.add_argument("--file", type=Path, nargs="+", help="アップロードするファイル")

@@ -12,32 +12,31 @@ Python 3.9+
 
 # Install
 
-```
+```bash
 $ pip install kci-confluence-cli
 ```
 
-# 使い方
+# Quick Start
 
-## 認証情報の指定
-以下のいずれかの方法で指定できます。
+環境変数で認証情報を設定:
 
-* 環境変数 `CONFLUENCE_USER_NAME` , `CONFLUENCE_USER_PASSWORD` に指定する
-* コマンドライン引数 `--confluence_user_name` , `--confluence_user_password`に指定する
+```bash
+export CONFLUENCE_USER_NAME="your_username"
+export CONFLUENCE_USER_PASSWORD="your_password"
+export CONFLUENCE_BASE_URL="https://your-domain.com/confluence"
+```
 
-上記の方法で認証情報が指定されない場合は、標準入力から認証情報を入力できます。
+ページ本文を取得:
 
+```bash
+$ confluence page get_body --page_id 12345
+```
 
-## ConfluenceのURLの指定
-アクセスするConfluenceのURLを、以下のいずれかの方法で指定できます。
+# Documentation
 
-* 環境変数 `CONFLUENCE_BASE_URL`に指定する
-* コマンドライン引数 `--confluence_base_url`に指定する
+詳細な使い方は [ドキュメント](https://confluence-cli.readthedocs.io/ja/latest/) を参照してください。
 
-上記の方法で指定されない場合は、標準入力から入力できます。
-
-来栖川電算のConfluneceにアクセスする場合は、`https://kurusugawa.jp/confluence`を指定してください。
-
-
-# Command Reference
-https://confluence-cli.readthedocs.io/ja/latest/command_reference/index.html を参照してください。
+- [Getting Started](https://confluence-cli.readthedocs.io/ja/latest/user_guide/getting_started.html) - インストール方法と基本的な使い方
+- [User Guide](https://confluence-cli.readthedocs.io/ja/latest/user_guide/index.html) - チュートリアルと実践的な使い方
+- [Command Reference](https://confluence-cli.readthedocs.io/ja/latest/command_reference/index.html) - 全コマンドのリファレンス
 

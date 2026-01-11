@@ -4,25 +4,25 @@ page update
 
 Description
 =================================
-ページまたはブログを更新します。
+ページを更新します。
 
 
 
 Examples
 =================================
 
-以下のコマンドは、 ``${CONTENT_ID}`` のページを ``page.xml`` の内容で更新します。
+以下のコマンドは、 ``${PAGE_ID}`` のページを ``page.xml`` の内容で更新します。
 
 .. code-block::
 
-    $ confluence page update --content_id ${CONTENT_ID} --xml_file page.xml
+    $ confluence page update --page_id ${PAGE_ID} --xml_file page.xml
 
 
 以下のコマンドは、ページを更新する際にコメントを残します。
 
 .. code-block::
 
-    $ confluence page update --content_id ${CONTENT_ID} --xml_file page.xml --comment "ページを更新しました"
+    $ confluence page update --page_id ${PAGE_ID} --xml_file page.xml --comment "ページを更新しました"
 
 
 

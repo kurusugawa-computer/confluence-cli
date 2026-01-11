@@ -11,11 +11,11 @@ Description
 Examples
 =================================
 
-以下のコマンドは、 ``${CONTENT_ID}`` のページの `storageフォーマット <https://ja.confluence.atlassian.com/doc/confluence-storage-format-790796544.html>`_ を出力します。
+以下のコマンドは、 ``${PAGE_ID}`` のページのstorageフォーマットを出力します。
 
 .. code-block::
 
-    $ confluence page get_body --content_id ${CONTENT_ID} > output.xml
+    $ confluence page get_body --page_id ${PAGE_ID} > output.xml
 
 
 .. code-block::

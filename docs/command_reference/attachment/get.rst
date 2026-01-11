@@ -15,7 +15,7 @@ Examples
 
 .. code-block::
 
-    $ confluence attachment get --content_id ${CONTENT_ID} > out.json
+    $ confluence attachment get --page_id ${PAGE_ID} > out.json
 
 
 
