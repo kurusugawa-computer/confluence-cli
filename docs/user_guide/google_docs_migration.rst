@@ -23,7 +23,7 @@ Google Docsの「ファイル」メニューから「ダウンロード」→「
 
 .. code-block:: bash
 
-   $ confluence attachment create --parent_content_id ${pageId} --dir images
+   $ confluence attachment create --page_id ${pageId} --dir images
 
 拡張子がない画像をアップロードする場合は、 ``--mime_type`` で画像用のMIMEタイプを指定してください。
 そうしないと、Confluence用XMLでファイルを参照することができません。
@@ -31,7 +31,7 @@ Google Docsの「ファイル」メニューから「ダウンロード」→「
 
 .. code-block:: bash
 
-   $ confluence attachment create --parent_content_id ${pageId} --dir images --mime_type "image/png"
+   $ confluence attachment create --page_id ${pageId} --dir images --mime_type "image/png"
 
 3. HTMLファイルをConfluence用のXMLに変換する
 --------------------------------------------------
