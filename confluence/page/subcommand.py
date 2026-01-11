@@ -18,7 +18,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
 
 def add_parser(subparsers: Optional[argparse._SubParsersAction] = None) -> argparse.ArgumentParser:
     subcommand_name = "page"
-    subcommand_help = "ページに関するサブコマンド"
+    subcommand_help = "ページまたはブログに関するサブコマンド"
 
     parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help, description=subcommand_help, is_subcommand=False)
     add_arguments_to_parser(parser)
