@@ -26,7 +26,7 @@ def get_attachments(api: Api, content_id: str, *, filename: None | str, media_ty
 
 def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
-    content_id = args.parent_content_id
+    content_id = args.page_id
 
     page = api.get_content_by_id(content_id)
     results: list[dict[str, Any]] = get_attachments(api, content_id, filename=args.filename, media_type=args.media_type)
@@ -69,7 +69,7 @@ def main(args: argparse.Namespace) -> None:
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
-    parser.add_argument("-c", "--parent_content_id", required=True, help="削除したい添付ファイルが存在するページのcontent_id")
+    parser.add_argument("-p", "--page_id", required=True, help="削除したい添付ファイルが存在するページのID")
 
     parser.add_argument("--filename", help="filter parameter to return only the Attachment with the matching file name")
     parser.add_argument("--media_type", help="filter parameter to return only Attachments with a matching Media-Type")
