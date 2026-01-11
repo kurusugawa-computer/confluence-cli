@@ -29,7 +29,7 @@ export CONFLUENCE_BASE_URL="https://your-domain.com/confluence"
 ページ本文を取得:
 
 ```bash
-$ confluence page get_body --content_id 12345
+$ confluence page get_body --page_id 12345
 ```
 
 # Documentation
