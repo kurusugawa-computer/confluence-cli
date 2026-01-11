@@ -58,7 +58,7 @@ Confluenceのページを編集モードにして、メニューから「Source 
 
 .. code-block:: bash
 
-   $ confluence page update --content_id ${CONTENT_ID} --xml_file ${XML_FILE}
+   $ confluence page update --page_id ${PAGE_ID} --xml_file ${XML_FILE}
 
 
 備考
