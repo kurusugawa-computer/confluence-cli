@@ -13,12 +13,24 @@ logger = logging.getLogger(__name__)
 
 
 class BodyRepresentation(Enum):
+    """
+    ページの中身の表現方法。
+    各フィールドの説明は以下のドキュメントの説明を引用しています。
+    https://docs.atlassian.com/atlassian-confluence/6.6.0/com/atlassian/confluence/api/model/content/ContentRepresentation.html
+    """
+
     STORAGE = "storage"
+    """Raw database format, for content that stores data in our XML storage format"""
     VIEW = "view"
+    """HTML representation for viewing in a web page"""
     EDITOR = "editor"
+    """Representation suitable for use in the rich text editor"""
     EXPORT_VIEW = "export_view"
+    """HTML representation for viewing, but with absolute urls, instead of relative urls in the markup."""
     STYLED_VIEW = "styled_view"
+    """A rendered view that includes inline styles in a"""
     ANONYMOUS_EXPORT_VIEW = "anonymous_export_view"
+    """HTML representation for viewing, but with absolute urls, instead of relative urls in the markup, and macros are rendered as though it is viewed by an anonymous user."""  # noqa: E501
 
 
 def main(args: argparse.Namespace) -> None:
