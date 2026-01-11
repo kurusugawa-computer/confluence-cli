@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 
 import confluence
+from confluence.common import cli
 from confluence.common.cli import create_api_instance, prompt_yesno
 
 logger = logging.getLogger(__name__)
@@ -57,7 +58,7 @@ def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse
     subcommand_name = "update"
     subcommand_help = "ページを更新します。"
 
-    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
+    parser = cli.add_parser(subparsers, subcommand_name, subcommand_help)
 
     add_arguments_to_parser(parser)
     return parser

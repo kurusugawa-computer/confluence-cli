@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import confluence
+from confluence.common import cli
 from confluence.common.api import Api
 from confluence.common.cli import create_api_instance
 
@@ -107,7 +108,7 @@ def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse
     subcommand_name = "create"
     subcommand_help = "添付ファイルを作成します。"
 
-    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
+    parser = cli.add_parser(subparsers, subcommand_name, subcommand_help)
 
     add_arguments_to_parser(parser)
     return parser

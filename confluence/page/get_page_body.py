@@ -5,7 +5,10 @@ import logging
 from enum import Enum
 from pathlib import Path
 
+from lxml import etree, html
+
 import confluence
+from confluence.common import cli
 from confluence.common.cli import create_api_instance
 from confluence.common.utils import output_string
 
@@ -33,6 +36,26 @@ class BodyRepresentation(Enum):
     """HTML representation for viewing, but with absolute urls, instead of relative urls in the markup, and macros are rendered as though it is viewed by an anonymous user."""  # noqa: E501
 
 
+def format_html(content: str) -> str:
+    """
+    HTMLを整形します。
+
+    Args:
+        content: 整形対象のHTML文字列
+
+    Returns:
+        整形されたHTML文字列
+    """
+    try:
+        # HTMLフラグメントをパースして整形
+        root = html.fromstring(content)
+        etree.indent(root, space="  ")
+        return html.tostring(root, encoding="unicode")
+    except Exception:
+        logger.warning("HTML整形に失敗しました。", exc_info=True)
+        return content
+
+
 def main(args: argparse.Namespace) -> None:
     api = create_api_instance(args)
     representation = args.representation
@@ -41,7 +64,13 @@ def main(args: argparse.Namespace) -> None:
 
     result = api.get_content_by_id(page_id, query_params={"expand": expand})
 
-    output_string(result["body"][representation]["value"], output=args.output)
+    content = result["body"][representation]["value"]
+
+    # 整形オプションが指定されている場合は整形する
+    if args.pretty:
+        content = format_html(content)
+
+    output_string(content, output=args.output)
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
@@ -50,6 +79,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
         "--representation", choices=[e.value for e in BodyRepresentation], default=BodyRepresentation.STORAGE.value, help="ページの中身の表現方法"
     )
     parser.add_argument("-o", "--output", type=Path, help="出力先")
+    parser.add_argument("--pretty", action="store_true", help="XMLまたはHTMLを整形して出力します")
 
     parser.set_defaults(subcommand_func=main)
 
@@ -58,7 +88,7 @@ def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse
     subcommand_name = "get_body"
     subcommand_help = "ページまたはブログの中身を取得します。"
 
-    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
+    parser = cli.add_parser(subparsers, subcommand_name, subcommand_help)
 
     add_arguments_to_parser(parser)
     return parser
