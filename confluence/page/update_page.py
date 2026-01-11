@@ -40,7 +40,7 @@ def main(args: argparse.Namespace) -> None:
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
-    parser.add_argument("-p", "--page_id", required=True, help="更新対象のページのID")
+    parser.add_argument("-p", "--page_id", required=True, help="更新対象のページまたはブログのID")
     parser.add_argument(
         "--xml_file",
         required=True,

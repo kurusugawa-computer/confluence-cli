@@ -85,7 +85,7 @@ def main(args: argparse.Namespace) -> None:
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
-    parser.add_argument("-p", "--page_id", required=True, help="ファイルのアップロード先であるページのID")
+    parser.add_argument("-p", "--page_id", required=True, help="ファイルのアップロード先であるページまたはブログのID")
 
     file_group = parser.add_mutually_exclusive_group(required=True)
     file_group.add_argument("--file", type=Path, nargs="+", help="アップロードするファイル")
