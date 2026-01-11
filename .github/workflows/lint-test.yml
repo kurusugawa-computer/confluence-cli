@@ -1,0 +1,49 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+      
+      - name: Install Poetry
+        run: |
+          pip install --upgrade pip
+          pip install 'poetry<1.8'
+      
+      - name: Install dependencies
+        env:
+          PIP_DEFAULT_TIMEOUT: 300
+        run: poetry install
+      
+      - name: Run tests
+        run: make test
+      
+      - name: Run lint (Python 3.13 only)
+        if: matrix.python-version == '3.13'
+        run: make lint

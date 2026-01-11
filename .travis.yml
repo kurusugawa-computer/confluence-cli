@@ -7,14 +7,14 @@ script:
   - make test
 
 python:
-  - 3.9
   - 3.10
   - 3.11
+  - 3.12
+  - 3.13
     script:
       - make test
       # 開発環境と同じバージョンではlintを実行する
       - make lint
-  - 3.12
 
 install:
   # pipをアップグレードする理由: pipのバージョンが古いと、pillowなど環境ごとにwheelを提供しているライブラリのインストールに失敗する可能性があるため
