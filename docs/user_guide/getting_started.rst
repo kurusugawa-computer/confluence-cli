@@ -7,7 +7,7 @@ Getting Started
 Requirements
 ==================================================
 
-* Python 3.9以上
+* Python 3.10以上
 
 
 Install
