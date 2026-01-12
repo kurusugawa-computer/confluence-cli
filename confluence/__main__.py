@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import logging
 from collections.abc import Sequence
-from typing import Optional
 
 import confluence
 import confluence.attachment.subcommand
@@ -30,7 +29,7 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(arguments: Optional[Sequence[str]] = None):  # noqa: ANN201
+def main(arguments: Sequence[str] | None = None):  # noqa: ANN201
     parser = create_parser()
     if arguments is None:
         args = parser.parse_args()

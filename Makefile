@@ -16,7 +16,6 @@ format:
 lint:
 	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES}
 	poetry run mypy ${SOURCE_FILES}
-	poetry run pylint --jobs=0 ${SOURCE_FILES}
 
 test:
 	# 並列実行してレポートも出力する

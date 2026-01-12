@@ -7,7 +7,7 @@ Getting Started
 Requirements
 ==================================================
 
-* Python 3.9以上
+* Python 3.10以上
 
 
 Install
@@ -71,10 +71,6 @@ ConfluenceのURLの指定
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 上記の方法で指定されない場合は、コマンド実行時に標準入力からURLを入力できます。
-
-.. note::
-
-   来栖川電算のConfluenceにアクセスする場合は、 ``https://kurusugawa.jp/confluence`` を指定してください。
 
 
 ``content_id`` の調べ方

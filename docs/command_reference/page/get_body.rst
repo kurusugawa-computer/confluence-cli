@@ -1,5 +1,5 @@
 ======================================
-body get_body
+page get_body
 ======================================
 
 Description
@@ -24,6 +24,9 @@ Examples
     <p>test</p>
     <p><ac:image ac:thumbnail="true" ac:height="62"><ri:attachment ri:filename="A.png" /></ac:image></p>
 
+デフォルトでは storage フォーマットで出力します。
+別のrepresentationで出力するには、 ``--representation`` オプションを使用します。
+詳細は https://qiita.com/yuji38kwmt/items/4ec92a024ea23a4bb378 を参照してください。
 
 
 Usage Details

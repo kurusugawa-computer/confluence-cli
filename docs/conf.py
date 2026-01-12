@@ -64,7 +64,6 @@ html_css_files = ["css/custom.css"]
 
 html_theme_options = {
     "github_url": "https://github.com/kurusugawa-computer/confluence-cli",
-    "footer_items": [],  # footerを空にする
 
     # icon_links`を指定しないと、pydata-sphinx-theme v0.13.0で
     # Handler <function update_config at 0x7f0333cb1430> for event 'builder-inited' threw an exception (exception: 'icon_links') というエラーが発生する

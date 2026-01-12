@@ -1,8 +1,8 @@
 # confluence-cli
-来栖川電算が利用しているConfluence v6.15.7を操作するためのCLIです。
+Confluence v6.15.7を操作するためのCLIです。
 
 
-[![Build Status](https://app.travis-ci.com/kurusugawa-computer/confluence-cli.svg?branch=main)](https://app.travis-ci.com/kurusugawa-computer/confluence-cli)
+[![Test](https://github.com/kurusugawa-computer/confluence-cli/actions/workflows/test.yml/badge.svg)](https://github.com/kurusugawa-computer/confluence-cli/actions/workflows/test.yml)
 [![PyPI version](https://badge.fury.io/py/kci-confluence-cli.svg)](https://badge.fury.io/py/kci-confluence-cli)
 [![Python Versions](https://img.shields.io/pypi/pyversions/kci-confluence-cli.svg)](https://pypi.org/project/kci-confluence-cli/)
 [![Documentation Status](https://readthedocs.org/projects/confluence-cli/badge/?version=latest)](https://confluence-cli.readthedocs.io/ja/latest/?badge=latest)
@@ -29,7 +29,7 @@ export CONFLUENCE_BASE_URL="https://your-domain.com/confluence"
 ページ本文を取得:
 
 ```bash
-$ confluence page get_body --page_id 12345
+$ confluence page get_body --page_id 123456
 ```
 
 # Documentation

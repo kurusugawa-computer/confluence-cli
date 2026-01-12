@@ -4,7 +4,7 @@ import argparse
 import logging
 from typing import Any
 
-import confluence
+from confluence.common import cli
 from confluence.common.api import Api
 from confluence.common.cli import create_api_instance, prompt_yesnoall
 
@@ -54,15 +54,15 @@ def main(args: argparse.Namespace) -> None:
 
                 yes, all_yes = prompt_yesnoall(confirm_message)
             if yes or all_yes:
-                logger.debug(f"{index+1}件目: id='{attachment_id}', title='{attachment_title}'をゴミ箱に移動します。 ")
+                logger.debug(f"{index + 1}件目: id='{attachment_id}', title='{attachment_title}'をゴミ箱に移動します。 ")
                 api.delete_content(attachment_id, query_params={"status": "current"})
                 if is_purged:
-                    logger.debug(f"{index+1}件目: id='{attachment_id}', title='{attachment_title}'をゴミ箱から完全に削除します。 ")
+                    logger.debug(f"{index + 1}件目: id='{attachment_id}', title='{attachment_title}'をゴミ箱から完全に削除します。 ")
                     api.delete_content(attachment_id, query_params={"status": "trashed"})
                 success_count += 1
 
         except Exception:
-            logger.warning(f"{index+1}件目: id='{attachment_id}', title='{attachment_title}'の削除に失敗しました。", exc_info=True)
+            logger.warning(f"{index + 1}件目: id='{attachment_id}', title='{attachment_title}'の削除に失敗しました。", exc_info=True)
             continue
 
     logger.info(f"{success_count}/{len(results)} 件の添付ファイルを削除しました。")
@@ -81,7 +81,7 @@ def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse
     subcommand_name = "delete"
     subcommand_help = "添付ファイルを削除します。"
 
-    parser = confluence.common.cli.add_parser(subparsers, subcommand_name, subcommand_help)
+    parser = cli.add_parser(subparsers, subcommand_name, subcommand_help)
 
     add_arguments_to_parser(parser)
     return parser
