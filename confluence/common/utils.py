@@ -4,7 +4,7 @@ import json
 import logging.config
 import pkgutil
 from pathlib import Path
-from typing import Any, Optional, TypeVar
+from typing import Any, TypeVar
 
 import yaml
 
@@ -28,7 +28,7 @@ def read_lines_except_blank_line(filepath: str) -> list[str]:
     return [line for line in lines if line != ""]
 
 
-def output_string(target: str, output: Optional[Path] = None) -> None:
+def output_string(target: str, output: Path | None = None) -> None:
     """
     文字列を出力する。
 
@@ -45,7 +45,7 @@ def output_string(target: str, output: Optional[Path] = None) -> None:
             logger.info(f"{output} に出力しました。")
 
 
-def print_json(target: Any, is_pretty: bool = False, output: Optional[Path] = None) -> None:  # noqa: ANN401
+def print_json(target: Any, is_pretty: bool = False, output: Path | None = None) -> None:  # noqa: ANN401
     """
     JSONを出力する。
 

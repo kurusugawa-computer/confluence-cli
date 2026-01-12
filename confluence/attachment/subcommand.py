@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import argparse
-from typing import Optional
 
 import confluence
-from confluence.common import cli
 import confluence.attachment.create_attachment
 import confluence.attachment.delete_attachment
 import confluence.attachment.get_attachment
+from confluence.common import cli
 
 
 def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
@@ -19,7 +18,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
     confluence.attachment.get_attachment.add_parser(subparsers)
 
 
-def add_parser(subparsers: Optional[argparse._SubParsersAction] = None) -> argparse.ArgumentParser:
+def add_parser(subparsers: argparse._SubParsersAction | None = None) -> argparse.ArgumentParser:
     subcommand_name = "attachment"
     subcommand_help = "添付ファイルに関するサブコマンド"
 

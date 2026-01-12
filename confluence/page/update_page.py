@@ -4,7 +4,6 @@ import argparse
 import logging
 from pathlib import Path
 
-import confluence
 from confluence.common import cli
 from confluence.common.cli import create_api_instance, prompt_yesno
 

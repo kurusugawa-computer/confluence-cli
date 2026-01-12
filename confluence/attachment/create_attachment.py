@@ -5,7 +5,6 @@ import logging
 from pathlib import Path
 from typing import Any
 
-import confluence
 from confluence.common import cli
 from confluence.common.api import Api
 from confluence.common.cli import create_api_instance
@@ -28,9 +27,9 @@ def create_attachments_from_file_list(
 
         try:
             api.create_attachment(content_id, file, query_params=query_params, mime_type=mime_type)
-            logger.debug(f"{index+1}件目: '{file}'をアップロードしました。")
+            logger.debug(f"{index + 1}件目: '{file}'をアップロードしました。")
             if (index + 1) % 10 == 0:
-                logger.info(f"{index+1}件目のファイルのアップロードが完了しました。")
+                logger.info(f"{index + 1}件目のファイルのアップロードが完了しました。")
 
         except Exception:
             logger.warning(f"'{file}'のアップロードに失敗しました。", exc_info=True)
@@ -63,9 +62,9 @@ def create_attachments_from_directory(
     for index, file in enumerate(files):
         try:
             api.create_attachment(content_id, file, query_params=query_params, mime_type=mime_type)
-            logger.debug(f"{index+1}件目: '{file}'をアップロードしました。")
+            logger.debug(f"{index + 1}件目: '{file}'をアップロードしました。")
             if (index + 1) % 10 == 0:
-                logger.info(f"{index+1}件目のファイルのアップロードが完了しました。")
+                logger.info(f"{index + 1}件目のファイルのアップロードが完了しました。")
 
         except Exception:
             logger.warning(f"'{file}'のアップロードに失敗しました。", exc_info=True)

@@ -8,7 +8,6 @@ import argparse
 import getpass
 import logging
 import os
-from typing import Optional
 
 from more_itertools import first_true
 
@@ -53,12 +52,12 @@ class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaul
 
 
 def add_parser(
-    subparsers: Optional[argparse._SubParsersAction],
+    subparsers: argparse._SubParsersAction | None,
     command_name: str,
     command_help: str,
-    description: Optional[str] = None,
+    description: str | None = None,
     is_subcommand: bool = True,
-    epilog: Optional[str] = None,
+    epilog: str | None = None,
 ) -> argparse.ArgumentParser:
     """
     サブコマンド用にparserを追加する
@@ -215,8 +214,7 @@ def create_api_instance(args: argparse.Namespace) -> Api:
 
     def format_url(url: str) -> str:
         url = url.strip()
-        if url.endswith("/"):
-            url = url[:-1]
+        url = url.removesuffix("/")
         return url
 
     confluence_base_url = args.confluence_base_url

@@ -1,5 +1,5 @@
 # confluence-cli
-来栖川電算が利用しているConfluence v6.15.7を操作するためのCLIです。
+Confluence v6.15.7を操作するためのCLIです。
 
 
 [![Test](https://github.com/kurusugawa-computer/confluence-cli/actions/workflows/test.yml/badge.svg)](https://github.com/kurusugawa-computer/confluence-cli/actions/workflows/test.yml)
@@ -29,7 +29,7 @@ export CONFLUENCE_BASE_URL="https://your-domain.com/confluence"
 ページ本文を取得:
 
 ```bash
-$ confluence page get_body --page_id 12345
+$ confluence page get_body --page_id 123456
 ```
 
 # Documentation

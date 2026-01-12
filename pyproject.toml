@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "kci-confluence-cli"
 version = "0.0.0"  # `poetry-dynamic-versioning`を使ってGitHubのバージョンタグを取得している。変更不要
-description = "来栖川電算が利用しているConfluence v6.15.7を操作するためのCLIです。"
+description = "Confluence v6.15.7を操作するためのCLIです。"
 authors = ["Kurusugawa Computer Inc."]
 license = "MIT"
 packages = [
@@ -18,7 +18,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 requests = "*"
 backoff = "*"
 pyquery = "^2"
@@ -34,7 +34,7 @@ pytest-cov = "*"
 
 
 [tool.poetry.group.linter.dependencies]
-ruff = "^0.4"
+ruff = "*"
 mypy = "^1"
 pylint = "^3"
 
@@ -68,7 +68,7 @@ check_untyped_defs = true
 
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py310"
 line-length = 150
 
 [tool.ruff.lint]
@@ -78,8 +78,6 @@ ignore = [
     "RUF002",# 全角記号など`ambiguous unicode character`も使いたいため
     "RUF003",# 全角記号など`ambiguous unicode character`も使いたいため
     "PLR2004", # magic-value-comparison: listのサイズで判定するときがよくあるため
-    "ANN101", # missing-type-self: 引数selfには型ヒントは付けていないため
-    "ANN102", # missing-type-cls: 引数clsには型ヒントは付けていないため
     "ANN002", # missing-type-args
     "ANN003", # missing-type-kwargs
     "ERA", # : 役立つこともあるが、コメントアウトしていないコードも警告されるので無視する
@@ -134,7 +132,7 @@ max-args = 10
 
 [tool.poetry-dynamic-versioning]
 enable = true
-format = "{base}"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]

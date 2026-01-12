@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import argparse
 import logging
 from enum import Enum
@@ -7,7 +5,6 @@ from pathlib import Path
 
 from lxml import etree, html
 
-import confluence
 from confluence.common import cli
 from confluence.common.cli import create_api_instance
 from confluence.common.utils import output_string
@@ -31,7 +28,7 @@ class BodyRepresentation(Enum):
     EXPORT_VIEW = "export_view"
     """HTML representation for viewing, but with absolute urls, instead of relative urls in the markup."""
     STYLED_VIEW = "styled_view"
-    """A rendered view that includes inline styles in a"""
+    """A rendered view that includes inline styles in a <style> element, wrapped in an entire <html> structure."""
     ANONYMOUS_EXPORT_VIEW = "anonymous_export_view"
     """HTML representation for viewing, but with absolute urls, instead of relative urls in the markup, and macros are rendered as though it is viewed by an anonymous user."""  # noqa: E501
 
@@ -63,7 +60,7 @@ def main(args: argparse.Namespace) -> None:
     page_id = args.page_id
 
     result = api.get_content_by_id(page_id, query_params={"expand": expand})
-
+    logger.info(f"以下のページの中身を取得しました。 :: page_id='{result['id']}', type='{result['type']}', title='{result['title']}'")
     content = result["body"][representation]["value"]
 
     # 整形オプションが指定されている場合は整形する

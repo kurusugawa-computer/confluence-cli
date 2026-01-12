@@ -5,7 +5,7 @@ import logging
 import mimetypes
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from requests_toolbelt import sessions
 
@@ -53,8 +53,8 @@ class Api:
         http_method: str,
         url: str,
         *,
-        headers: Optional[dict[str, Any]] = None,
-        params: Optional[QueryParams] = None,
+        headers: dict[str, Any] | None = None,
+        params: QueryParams | None = None,
         data: Any = None,  # noqa: ANN401
         **kwargs,
     ) -> Any:  # noqa: ANN401
@@ -101,12 +101,12 @@ class Api:
         response.raise_for_status()
         return response
 
-    def get_attachments(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+    def get_attachments(self, content_id: str, *, query_params: QueryParams | None = None) -> dict[str, Any]:
         url = f"content/{content_id}/child/attachment"
         return self._request("get", url, params=query_params).json()
 
     def create_attachment(
-        self, content_id: str, file: Path, *, query_params: Optional[QueryParams] = None, mime_type: Optional[str] = None
+        self, content_id: str, file: Path, *, query_params: QueryParams | None = None, mime_type: str | None = None
     ) -> dict[str, Any]:
         """
         Args:
@@ -122,7 +122,7 @@ class Api:
             files = {"file": (file.name, f, new_mime_type)}
             return self._request("post", url, params=query_params, files=files, headers=headers).json()
 
-    def get_content(self, *, query_params: Optional[QueryParams] = None) -> list[dict[str, Any]]:
+    def get_content(self, *, query_params: QueryParams | None = None) -> list[dict[str, Any]]:
         """
         Returns a paginated list of Content.
 
@@ -130,7 +130,7 @@ class Api:
         """
         return self._request("get", "content", params=query_params).json()
 
-    def get_content_by_id(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+    def get_content_by_id(self, content_id: str, *, query_params: QueryParams | None = None) -> dict[str, Any]:
         """
         Returns a piece of Content.
 
@@ -138,9 +138,7 @@ class Api:
         """
         return self._request("get", f"content/{content_id}", params=query_params).json()
 
-    def update_content(
-        self, content_id: str, *, query_params: Optional[QueryParams] = None, request_body: Optional[RequestBody] = None
-    ) -> dict[str, Any]:
+    def update_content(self, content_id: str, *, query_params: QueryParams | None = None, request_body: RequestBody | None = None) -> dict[str, Any]:
         """
         Updates a piece of Content, including changes to content status
 
@@ -148,7 +146,7 @@ class Api:
         """
         return self._request("put", f"content/{content_id}", params=query_params, json=request_body).json()
 
-    def delete_content(self, content_id: str, *, query_params: Optional[QueryParams] = None) -> None:
+    def delete_content(self, content_id: str, *, query_params: QueryParams | None = None) -> None:
         """
         Trashes or purges a piece of Content, based on its {@link ContentType} and {@link ContentStatus}.
 
@@ -159,14 +157,14 @@ class Api:
         """
         self._request("delete", f"content/{content_id}", params=query_params)
 
-    def get_content_history(self, content_id: str, *, query_params: Optional[QueryParams] = None):  # noqa: ANN201
+    def get_content_history(self, content_id: str, *, query_params: QueryParams | None = None):  # noqa: ANN201
         """Returns the history of a particular piece of content
 
         https://docs.atlassian.com/ConfluenceServer/rest/6.15.7/#api/content-getHistory
         """
         return self._request("get", f"content/{content_id}/history", params=query_params).json()
 
-    def search_content(self, *, query_params: Optional[QueryParams] = None) -> dict[str, Any]:
+    def search_content(self, *, query_params: QueryParams | None = None) -> dict[str, Any]:
         """
         Fetch a list of content using the Confluence Query Language (CQL)
 

@@ -5,7 +5,6 @@ import logging
 from pathlib import Path
 from typing import Any
 
-import confluence
 from confluence.common import cli
 from confluence.common.cli import create_api_instance
 from confluence.common.utils import print_json
