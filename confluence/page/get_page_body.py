@@ -76,7 +76,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser) -> None:
         "--representation", choices=[e.value for e in BodyRepresentation], default=BodyRepresentation.STORAGE.value, help="ページの中身の表現方法。詳細は https://qiita.com/yuji38kwmt/items/4ec92a024ea23a4bb378 を参照してください。"
     )
     parser.add_argument("-o", "--output", type=Path, help="出力先")
-    parser.add_argument("--pretty", action="store_true", help="XMLまたはHTMLを整形して出力します。")
+    parser.add_argument("--pretty", action="store_true", help="HTMLを整形して出力します。")
 
     parser.set_defaults(subcommand_func=main)
 
