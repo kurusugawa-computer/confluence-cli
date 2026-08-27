@@ -8,7 +8,7 @@ Confluence v6.15.7を操作するためのCLIです。
 [![Documentation Status](https://readthedocs.org/projects/confluence-cli/badge/?version=latest)](https://confluence-cli.readthedocs.io/ja/latest/?badge=latest)
 
 # Requirements
-Python 3.10+
+Python 3.12+
 
 # Install
 

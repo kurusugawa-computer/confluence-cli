@@ -15,10 +15,10 @@
     "files.autoSaveDelay": 1000,
     "python.languageServer": "Pylance",
     "python.autoComplete.extraPaths": [
-        ".venv/lib/python3.10/site-packages/"
+        ".venv/lib/python3.12/site-packages/"
     ],
     "python.analysis.extraPaths": [
-        ".venv/lib/python3.10/site-packages/"
+        ".venv/lib/python3.12/site-packages/"
     ],
     "python.analysis.completeFunctionParens": true,
     "[python]": {
