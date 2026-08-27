@@ -8,26 +8,19 @@ endif
 .PHONY: format lint test docs publish
 
 format:
-	poetry run ruff format ${SOURCE_FILES}  ${TEST_FILES}
-	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES} --fix-only --exit-zero
+	uv run ruff format ${SOURCE_FILES}  ${TEST_FILES}
+	uv run ruff check ${SOURCE_FILES} ${TEST_FILES} --fix-only --exit-zero
 
 
 
 lint:
-	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES}
-	poetry run mypy ${SOURCE_FILES}
+	uv run ruff check ${SOURCE_FILES} ${TEST_FILES}
+	uv run mypy ${SOURCE_FILES}
 
 test:
 	# 並列実行してレポートも出力する
-	poetry run pytest -n auto  --cov=kci --cov-report=html tests
+	uv run pytest -n auto  --cov=kci --cov-report=html tests
 
 docs:
-	cd docs && poetry run make html
-
-# publish:
-# 	# public PyPIにデプロイ
-# 	poetry publish --build
-# 	# 社内PyPIにデプロイ
-# 	# 事前に`$ poetry config repositories.kci-upload https://kurusugawa.jp/nexus3/repository/KRS-pypi/ `を実行すること
-# 	poetry publish --repository kci-upload --build
+	cd docs && uv run make html
 

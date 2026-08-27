@@ -1,63 +1,46 @@
-[tool.poetry]
+[project]
 name = "kci-confluence-cli"
-version = "0.0.0"  # `poetry-dynamic-versioning`を使ってGitHubのバージョンタグを取得している。変更不要
+dynamic = ["version"]
 description = "Confluence v6.15.7を操作するためのCLIです。"
-authors = ["Kurusugawa Computer Inc."]
-license = "MIT"
-packages = [
-    { include = "confluence" }
-]
-readme="README.md"
-repository="https://github.com/kurusugawa-computer/confluence-cli"
+authors = [{ name = "Kurusugawa Computer Inc." }]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.10"
 classifiers = [
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers",
-        "Environment :: Console",
-        "Topic :: Utilities",
-        "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Environment :: Console",
+    "Topic :: Utilities",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "requests",
+    "backoff",
+    "pyquery>=2",
+    "requests-toolbelt>=1",
+    "more-itertools",
+    "pyyaml",
+    "lxml",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-requests = "*"
-backoff = "*"
-pyquery = "^2"
-requests-toolbelt = "^1"
-more_itertools = "*"
-pyyaml = "*"
-lxml = "*"
+[project.urls]
+Repository = "https://github.com/kurusugawa-computer/confluence-cli"
 
-[tool.poetry.group.test.dependencies]
-pytest = "^7"
-pytest-xdist = "*"
-pytest-cov = "*"
+[dependency-groups]
+dev = ["ipython"]
+test = ["pytest>=7", "pytest-xdist", "pytest-cov"]
+linter = ["ruff", "mypy>=1", "types-pytz", "types-requests", "types-python-dateutil", "types-PyYAML"]
+docs = ["sphinx>=7", "pydata-sphinx-theme>=0.13", "sphinx-argparse"]
 
+[tool.uv]
+default-groups = ["dev", "test", "linter", "docs"]
+package = true
 
-[tool.poetry.group.linter.dependencies]
-ruff = "*"
-mypy = "^1"
-
-
-types-pytz = "*"
-types-requests = "*"
-types-python-dateutil = "*"
-types-PyYAML = "*"
-
-[tool.poetry.group.documentation.dependencies]
-sphinx = "^7"
-pydata-sphinx-theme = ">=0.13"
-sphinx-argparse = "*"
-
-
-[tool.poetry.group.dev]
-# 開発するときのみ必要なライブラリ。インストールしなくても開発はできるので、オプショナルにする
-optional = true
-
-[tool.poetry.group.dev.dependencies]
-ipython = "*"
-
-
-[tool.poetry.scripts]
+[project.scripts]
 confluence = "confluence.__main__:main"
 
 [tool.mypy]
@@ -73,10 +56,12 @@ line-length = 150
 
 [tool.ruff.lint]
 ignore = [
+    "CPY001", # copyright notice: 既存コードに著作権ヘッダーを付けていないため
     "G004", # `logging-f-string` : loggingでf-stringを使いたいので無視する
     "RUF001", # 全角記号など`ambiguous unicode character`も使いたいため
     "RUF002",# 全角記号など`ambiguous unicode character`も使いたいため
     "RUF003",# 全角記号など`ambiguous unicode character`も使いたいため
+    "RUF036", # `None | str` の順序を既存コードで使用しているため
     "PLR2004", # magic-value-comparison: listのサイズで判定するときがよくあるため
     "ANN002", # missing-type-args
     "ANN003", # missing-type-kwargs
@@ -130,12 +115,12 @@ convention = "google"
 max-args = 10
 
 
-[tool.poetry-dynamic-versioning]
-enable = true
-
-
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
 
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
 
+[tool.hatch.build.targets.wheel]
+packages = ["confluence"]

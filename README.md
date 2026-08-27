@@ -16,6 +16,18 @@ Python 3.10+
 $ pip install kci-confluence-cli
 ```
 
+`uv` を使用している場合は、インストールせずに実行することもできます。
+
+```bash
+$ uvx --from kci-confluence-cli confluence page get_body --page_id 123456
+```
+
+自動化などで実行するバージョンを固定する場合は、パッケージのバージョンを指定します。
+
+```bash
+$ uvx --from 'kci-confluence-cli==<version>' confluence page get_body --page_id 123456
+```
+
 # Quick Start
 
 環境変数で認証情報を設定:
@@ -39,4 +51,3 @@ $ confluence page get_body --page_id 123456
 - [Getting Started](https://confluence-cli.readthedocs.io/ja/latest/user_guide/getting_started.html) - インストール方法と基本的な使い方
 - [User Guide](https://confluence-cli.readthedocs.io/ja/latest/user_guide/index.html) - チュートリアルと実践的な使い方
 - [Command Reference](https://confluence-cli.readthedocs.io/ja/latest/command_reference/index.html) - 全コマンドのリファレンス
-

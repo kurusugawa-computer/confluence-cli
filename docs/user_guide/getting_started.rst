@@ -18,6 +18,18 @@ Install
 
    $ pip install kci-confluence-cli
 
+``uv`` を使用している場合は、インストールせずに実行することもできます。
+
+.. code-block:: bash
+
+   $ uvx --from kci-confluence-cli confluence page get_body --page_id 123456
+
+自動化などで実行するバージョンを固定する場合は、パッケージのバージョンを指定します。
+
+.. code-block:: bash
+
+   $ uvx --from 'kci-confluence-cli==<version>' confluence page get_body --page_id 123456
+
 
 Usage
 ==================================================
@@ -75,4 +87,3 @@ ConfluenceのURLの指定
 
 ``content_id`` の調べ方
 --------------------------------------------------
-
