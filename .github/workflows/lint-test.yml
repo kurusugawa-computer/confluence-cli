@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.12', '3.13']
+        python-version: ['3.12', '3.13', '3.14']
     
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +35,6 @@ jobs:
       - name: Run tests
         run: make test
       
-      - name: Run lint (Python 3.13 only)
-        if: matrix.python-version == '3.13'
+      - name: Run lint (Python 3.14 only)
+        if: matrix.python-version == '3.14'
         run: make lint
