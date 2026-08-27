@@ -554,7 +554,7 @@ docs = [
     { name = "sphinx-argparse" },
 ]
 linter = [
-    { name = "mypy", specifier = ">=1" },
+    { name = "mypy", specifier = ">=2" },
     { name = "ruff" },
     { name = "types-python-dateutil" },
     { name = "types-pytz" },
@@ -562,7 +562,7 @@ linter = [
     { name = "types-requests" },
 ]
 test = [
-    { name = "pytest", specifier = ">=7" },
+    { name = "pytest", specifier = ">=9" },
     { name = "pytest-cov" },
     { name = "pytest-xdist" },
 ]

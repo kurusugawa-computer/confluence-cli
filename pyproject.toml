@@ -30,8 +30,8 @@ Repository = "https://github.com/kurusugawa-computer/confluence-cli"
 
 [dependency-groups]
 dev = ["ipython"]
-test = ["pytest>=7", "pytest-xdist", "pytest-cov"]
-linter = ["ruff", "mypy>=1", "types-pytz", "types-requests", "types-python-dateutil", "types-PyYAML"]
+test = ["pytest>=9", "pytest-xdist", "pytest-cov"]
+linter = ["ruff", "mypy>=2", "types-pytz", "types-requests", "types-python-dateutil", "types-PyYAML"]
 docs = ["sphinx>=7", "pydata-sphinx-theme>=0.13", "sphinx-argparse"]
 
 [tool.uv]
