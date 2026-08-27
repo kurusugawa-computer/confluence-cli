@@ -66,19 +66,17 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=on \
     PIP_DISABLE_PIP_VERSION_CHECK=on
 
-# poetry
+# uv
 RUN set -x \
     && python -m pip install -U \
         pip \
         setuptools \
         requests \
     && python -m pip install \
-        "poetry<1.6"
+        uv
 
 # Add user / Grant sudo privileges
 RUN useradd -m -s /bin/bash -u 5000 -U vscode \
     && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/ALL
 
 USER vscode
-
-RUN poetry config virtualenvs.in-project true

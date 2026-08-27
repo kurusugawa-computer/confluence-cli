@@ -17,15 +17,13 @@ python:
       - make lint
 
 install:
-  # pipをアップグレードする理由: pipのバージョンが古いと、pillowなど環境ごとにwheelを提供しているライブラリのインストールに失敗する可能性があるため
-  - pip install pip --upgrade
-  - pip install 'poetry<1.8'
+  - pip install uv
   # travis_retryを使う理由: インストール時にtimeoutで失敗しないようにするため
-  - travis_retry poetry install
+  - travis_retry uv sync --all-groups
 
 branches:
   only:
   - main
 env:
-  # `poetry install`時に`Max retries exceeded with`が発生しないようにするため、タイムアウト時間を指定する
+  # 依存パッケージのダウンロード時にタイムアウトしないようにするため、タイムアウト時間を指定する
   - PIP_DEFAULT_TIMEOUT=300
