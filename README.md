@@ -22,6 +22,24 @@ $ pip install kci-confluence-cli
 $ uvx --from kci-confluence-cli confluence page get_body --page_id 123456
 ```
 
+Python clientとして利用する場合は、共通のtimeout、redirect、response size policyを指定できます。
+
+```python
+from confluence.common.api import Api, TransportPolicy
+
+api = Api(
+    username,
+    password,
+    base_url,
+    transport_policy=TransportPolicy(
+        timeout_second=10,
+        follow_redirects=False,
+        response_byte_bound=2 * 1024 * 1024,
+    ),
+)
+content = api.get_content_by_id(content_id, query_params={"expand": "space,body.storage,version,ancestors"})
+```
+
 
 # Quick Start
 
