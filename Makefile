@@ -19,8 +19,7 @@ lint:
 
 test:
 	# 並列実行してレポートも出力する
-	uv run pytest -n auto  --cov=kci --cov-report=html tests
+	uv run pytest -n auto --cov=confluence --cov-report=html tests
 
 docs:
 	cd docs && uv run make html
-
