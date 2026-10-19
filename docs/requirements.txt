@@ -1,4 +1,4 @@
 # ReadTheDocs用の依存パッケージ
 sphinx==9.1.0
-pydata-sphinx-theme==0.15.2
+pydata-sphinx-theme==0.23.0
 sphinx-argparse==0.4.0
