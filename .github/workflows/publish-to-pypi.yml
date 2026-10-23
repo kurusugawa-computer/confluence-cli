@@ -16,6 +16,8 @@ jobs:
         python-version: "3.12"
     - name: Set up uv
       uses: astral-sh/setup-uv@v6
+      with:
+        version: "latest"
     - name: Publish
       env:
         UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
