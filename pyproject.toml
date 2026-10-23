@@ -124,3 +124,6 @@ source = "uv-dynamic-versioning"
 
 [tool.hatch.build.targets.wheel]
 packages = ["confluence"]
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
