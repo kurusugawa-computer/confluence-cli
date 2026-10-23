@@ -75,3 +75,5 @@ $ confluence page get_body --page_id 123456
 uv sync --locked
 uv run pre-commit install
 ```
+
+Docker の接続先・認証設定は、通常利用している設定を引き継ぎます。設定ディレクトリを明示的に切り替える場合のみ、`GITLEAKS_DOCKER_CONFIG=/tmp/gitleaks-docker-config make gitleaks` のように指定してください。
