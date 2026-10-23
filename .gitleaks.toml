@@ -1,0 +1,4 @@
+title = "confluence-cli gitleaks config"
+
+[extend]
+useDefault = true
