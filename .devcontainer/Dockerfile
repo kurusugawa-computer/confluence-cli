@@ -73,7 +73,7 @@ RUN set -x \
         setuptools \
         requests \
     && python -m pip install \
-        uv
+        "uv==0.13.5"
 
 # Add user / Grant sudo privileges
 RUN useradd -m -s /bin/bash -u 5000 -U vscode \

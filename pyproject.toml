@@ -36,6 +36,7 @@ linter = ["ruff", "mypy>=2", "types-pytz", "types-requests", "types-python-dateu
 docs = ["sphinx>=7", "pydata-sphinx-theme>=0.13", "sphinx-argparse"]
 
 [tool.uv]
+required-version = ">=0.13.4"
 default-groups = ["dev", "test", "linter", "docs"]
 package = true
 
@@ -123,3 +124,6 @@ source = "uv-dynamic-versioning"
 
 [tool.hatch.build.targets.wheel]
 packages = ["confluence"]
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
