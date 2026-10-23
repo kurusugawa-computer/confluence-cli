@@ -15,6 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
 ]
 dependencies = [
     "requests",
@@ -30,10 +31,28 @@ dependencies = [
 Repository = "https://github.com/kurusugawa-computer/confluence-cli"
 
 [dependency-groups]
-dev = ["ipython"]
-test = ["pytest>=9", "pytest-xdist", "pytest-cov"]
-linter = ["ruff", "mypy>=2", "types-pytz", "types-requests", "types-python-dateutil", "types-PyYAML"]
-docs = ["sphinx>=7", "pydata-sphinx-theme>=0.13", "sphinx-argparse"]
+dev = [
+    "ipython",
+]
+test = [
+    "pytest>=9.1.1",
+    "pytest-xdist>=3.8.0",
+    "pytest-cov>=7.1.0",
+]
+linter = [
+    "ruff>=0.17.2",
+    "mypy>=2.4.0",
+    "types-pytz>=2026.5.0.20261006",
+    "types-requests>=2.33.0.20261006",
+    "types-python-dateutil>=2.9.0.20261021",
+    "types-PyYAML>=6.0.12.20260906",
+]
+docs = [
+    "sphinx>=9.1.1; python_version < '3.13'",
+    "sphinx>=9.2.0; python_version >= '3.13'",
+    "pydata-sphinx-theme>=0.23.0",
+    "sphinx-argparse>=0.6.1",
+]
 
 [tool.uv]
 required-version = ">=0.13.4"
@@ -48,7 +67,6 @@ confluence = "confluence.__main__:main"
 ignore_missing_imports = true
 # 型ヒントが付いていない関数もチェックする
 check_untyped_defs = true
-
 
 [tool.ruff]
 target-version = "py312"
@@ -107,13 +125,11 @@ select = [
 ]
 
 
-
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.ruff.lint.pylint]
 max-args = 10
-
 
 [build-system]
 requires = ["hatchling", "uv-dynamic-versioning"]
