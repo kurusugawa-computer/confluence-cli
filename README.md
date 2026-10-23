@@ -64,3 +64,14 @@ $ confluence page get_body --page_id 123456
 - [Getting Started](https://confluence-cli.readthedocs.io/ja/latest/user_guide/getting_started.html) - インストール方法と基本的な使い方
 - [User Guide](https://confluence-cli.readthedocs.io/ja/latest/user_guide/index.html) - チュートリアルと実践的な使い方
 - [Command Reference](https://confluence-cli.readthedocs.io/ja/latest/command_reference/index.html) - 全コマンドのリファレンス
+
+## シークレット検査
+
+`make gitleaks` で現在のブランチの Git 履歴を検査します。gitleaks をインストール済みならそのコマンドを使い、未インストールなら Docker で v8.30.1 を実行します。検出値はログでマスクします。CI でも同じ検査を実行します。
+
+コミット前の差分検査には pre-commit フックを利用できます。
+
+```sh
+uv sync --locked
+uv run pre-commit install
+```
