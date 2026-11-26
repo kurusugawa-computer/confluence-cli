@@ -18,6 +18,10 @@ def main(args: argparse.Namespace) -> None:
     xml_text = xml_file.read_text(encoding="utf-8")
 
     old_content = api.get_content_by_id(page_id, query_params={"expand": "version,ancestors,space,body.storage"})
+    current_version = old_content["version"]["number"]
+    if args.expected_version is not None and args.expected_version != current_version:
+        msg = f"ページ {page_id} の版が変わっています（指定: {args.expected_version}、現在: {current_version}）。本文を取得し直してください。"
+        raise ValueError(msg)
 
     page_title = old_content["title"]
     space_key = old_content["space"]["key"]
@@ -29,7 +33,7 @@ def main(args: argparse.Namespace) -> None:
             return
 
     request_body = {
-        "version": {"number": old_content["version"]["number"] + 1, "message": comment},
+        "version": {"number": current_version + 1, "message": comment},
         "title": page_title,
         "type": old_content["type"],
         "space": {"key": space_key},
@@ -47,6 +51,7 @@ def add_arguments_to_parser(parser: argparse.ArgumentParser):  # noqa: ANN201
         type=Path,
         help="storageフォーマットで記載されたXMLファイルのパス。このファイルの内容でページが更新されます。",
     )
+    parser.add_argument("--expected_version", type=int, help="編集元のページの版番号。現在の版と一致しない場合は更新を中止します。")
     parser.add_argument("--comment", help="ページを更新したときに残すコメント。")
     parser.add_argument("--yes", action="store_true", help="すべてのプロンプトに自動的に'yes'と答え、非対話的に実行します。")
 
