@@ -9,7 +9,7 @@ import confluence.attachment.subcommand
 import confluence.content.subcommand
 import confluence.local.subcommand
 import confluence.page.subcommand
-from confluence.common.cli import PrettyHelpFormatter
+from confluence.common.cli import COMMAND_LINE_ERROR_STATUS_CODE, CommandLineError, PrettyHelpFormatter
 from confluence.common.utils import set_logger
 
 logger = logging.getLogger(__name__)
@@ -40,6 +40,8 @@ def main(arguments: Sequence[str] | None = None):  # noqa: ANN201
         try:
             set_logger(args.debug)
             args.subcommand_func(args)
+        except CommandLineError as e:
+            parser.exit(COMMAND_LINE_ERROR_STATUS_CODE, f"error: {e}\n")
         except Exception as e:
             logger.exception(e)
             raise e

@@ -18,6 +18,10 @@ logger = logging.getLogger(__name__)
 COMMAND_LINE_ERROR_STATUS_CODE = 2
 
 
+class CommandLineError(Exception):
+    """コマンドライン引数や環境変数を修正すると解消できるエラー。"""
+
+
 class PrettyHelpFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
     def _format_action(self, action: argparse.Action) -> str:
         return super()._format_action(action) + "\n"
@@ -82,6 +86,7 @@ def add_parser(
         """
         parent_parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
         group = parent_parser.add_argument_group(GLOBAL_OPTIONAL_ARGUMENTS_TITLE)
+        group.add_argument("--non_interactive", action="store_true", help="対話入力を要求せず、必要な認証情報や操作の確認がなければエラーにします。")
         group.add_argument("--debug", action="store_true", help="指定するとデバッグ用のログが出力されます。")
         group.add_argument(
             "--confluence_base_url",
@@ -216,6 +221,23 @@ def create_api_instance(args: argparse.Namespace) -> Api:
         url = url.strip()
         url = url.removesuffix("/")
         return url
+
+    if args.non_interactive:
+        credentials = {}
+        for name in ("confluence_base_url", "confluence_user_name", "confluence_user_password"):
+            env_name = name.upper()
+            value = getattr(args, name)
+            if value is None:
+                value = os.environ.get(env_name)
+            if not value or (name != "confluence_user_password" and not value.strip()):
+                msg = f"--non_interactive では --{name} または環境変数 {env_name} を指定してください。"
+                raise CommandLineError(msg)
+            credentials[name] = value
+        return Api(
+            credentials["confluence_user_name"],
+            credentials["confluence_user_password"],
+            format_url(credentials["confluence_base_url"]),
+        )
 
     confluence_base_url = args.confluence_base_url
     if confluence_base_url is None:

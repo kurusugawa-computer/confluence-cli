@@ -25,6 +25,10 @@ def get_attachments(api: Api, content_id: str, *, filename: None | str, media_ty
 
 
 def main(args: argparse.Namespace) -> None:
+    if args.non_interactive:
+        msg = "attachment delete は確認入力が必要なため、--non_interactive では実行できません。"
+        raise cli.CommandLineError(msg)
+
     api = create_api_instance(args)
     content_id = args.page_id
 

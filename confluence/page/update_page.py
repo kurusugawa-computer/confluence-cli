@@ -24,6 +24,9 @@ def main(args: argparse.Namespace) -> None:
     logger.info(f"次のページを更新します。 :: page_id='{page_id}', title='{page_title}', space.key='{space_key}'")
 
     if not args.yes:
+        if args.non_interactive:
+            msg = "--non_interactive でページを更新するには --yes を指定してください。"
+            raise cli.CommandLineError(msg)
         if not prompt_yesno("ページを更新しますか?"):
             logger.info("ページの更新をキャンセルしました。")
             return
