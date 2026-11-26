@@ -8,6 +8,7 @@ import argparse
 import getpass
 import logging
 import os
+import sys
 
 from more_itertools import first_true
 
@@ -129,6 +130,11 @@ def add_parser(
     return parser
 
 
+def _prompt_input(message: str) -> str:
+    print(message, end="", file=sys.stderr, flush=True)
+    return input()
+
+
 def prompt_yesno(msg: str) -> bool:
     """
     標準入力で yes, noを選択できるようにする。
@@ -140,7 +146,7 @@ def prompt_yesno(msg: str) -> bool:
 
     """
     while True:
-        choice = input(f"{msg} [y/n] : ")
+        choice = _prompt_input(f"{msg} [y/n] : ")
         if choice == "y":
             return True
 
@@ -203,13 +209,13 @@ def create_api_instance(args: argparse.Namespace) -> Api:
     def get_confluence_user_name() -> str:
         value = ""
         while value == "":
-            value = input("Confluenceのユーザー名を入力してください。 : ")
+            value = _prompt_input("Confluenceのユーザー名を入力してください。 : ")
         return value
 
     def get_confluence_base_url_from_stdin() -> str:
         value = ""
         while value == "":
-            value = input("ConfluenceのURLを入力してください。(例) https://kurusugawa.jp/confluence : ")
+            value = _prompt_input("ConfluenceのURLを入力してください。(例) https://kurusugawa.jp/confluence : ")
         return value
 
     def format_url(url: str) -> str:
